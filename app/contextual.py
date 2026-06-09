@@ -51,7 +51,7 @@ def flag_contextual_inconsistencies(factura: FacturaEstructurada) -> list[AuditF
         "Si encuentras inconsistencias contextuales, devuelve una lista JSON con este formato estricto:\n"
         "[\n"
         "  {\n"
-        "    \"gravedad\": \"warning\" o \"critical\",\n"
+        "    \"gravedad\": \"warning\",\n"
         "    \"tipo\": \"contexto\",\n"
         "    \"mensaje\": \"Explicación del hallazgo semántico\",\n"
         "    \"citas\": [ { \"page\": 1 } ]\n"

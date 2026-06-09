@@ -47,7 +47,8 @@ def process_batch(pdf_paths: List[str]) -> List[AuditReport]:
         has_llm_warning = False
         
         for h in hallazgos:
-            if h.gravedad == "critical" or h.tipo in ["aritmética", "faltante", "documento_invalido", "duplicado"]:
+            # EXCLUSIVO DETERMINISTA: Solo matemáticas o reglas duras pueden rechazar automáticamente.
+            if h.tipo in ["aritmética", "faltante", "documento_invalido", "duplicado"]:
                 es_valida = False
                 has_critical_deterministic = True
             if h.tipo == "contexto":
