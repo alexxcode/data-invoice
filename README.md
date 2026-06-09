@@ -44,6 +44,20 @@ Resultados de la muestra piloto (Baseline Esperado frente a Ground Truth inyecta
 
 **Conclusión Operativa:** La evaluación piloto demuestra empíricamente el valor del diseño de doble motor. El LLM es extraordinario para la lectura no estructurada pero sufre de una tasa de Falsos Positivos (ruido contextual) que hace inviable usarlo para tomar decisiones finales de rechazo. El Motor Determinista actúa como el ancla de la verdad, asegurando un sistema auditable y seguro para producción, asumiendo que los fallos de OCR derivarán facturas a revisión humana.
 
+## Interfaz de Usuario y Ruteo (Demostración)
+
+A continuación, capturas reales del sistema en funcionamiento, demostrando cómo la interfaz web clasifica visualmente los documentos tras ser procesados por la canalización determinista y el LLM:
+
+<div align="center">
+  <img src="imagenes_repo/Screenshot%202026-06-08%20225846.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-08%20225900.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-08%20232503.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-08%20232704.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-08%20234921.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-08%20235349.png" width="45%" />
+  <img src="imagenes_repo/Screenshot%202026-06-09%20000218.png" width="45%" />
+</div>
+
 ## Tecnologías Utilizadas
 
 - **Core:** Python 3.12, FastAPI, Pydantic v2.
