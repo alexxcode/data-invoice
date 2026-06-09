@@ -149,7 +149,8 @@ header p {
     text-transform: uppercase;
 }
 .badge.valid { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-.badge.invalid { background: rgba(239, 68, 68, 0.2); color: var(--critical); }
+.badge.invalid { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+.badge.rejected { background: rgba(239, 68, 68, 0.2); color: var(--critical); }
 
 .finding {
     background: rgba(0,0,0,0.2);

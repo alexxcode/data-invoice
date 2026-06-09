@@ -72,9 +72,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'report-card';
             
-            const isValid = report.es_valida;
-            const badgeClass = isValid ? 'valid' : 'invalid';
-            const badgeText = isValid ? 'Sin anomalías críticas' : 'Requiere revisión manual';
+            const policy = report.policy_decision;
+            const score = report.confidence_score ? (report.confidence_score * 100).toFixed(0) : '0';
+            
+            let badgeClass = '';
+            let badgeText = '';
+            if (policy === 'AUTO_APPROVE') {
+                badgeClass = 'valid';
+                badgeText = `✅ AUTO-APROBADO (${score}%)`;
+            } else if (policy === 'REJECT') {
+                badgeClass = 'rejected';
+                badgeText = `❌ RECHAZADO (${score}%)`;
+            } else {
+                badgeClass = 'invalid';
+                badgeText = `⚠️ REVISIÓN MANUAL (${score}%)`;
+            }
 
             let hallazgosHtml = '';
             if (report.hallazgos.length === 0) {

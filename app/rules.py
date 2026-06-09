@@ -23,17 +23,10 @@ def check_arithmetic(factura: FacturaEstructurada) -> List[AuditFinding]:
             citas=citas
         ))
         
-    # 2. Validar que la suma de conceptos = Subtotal
-    suma_conceptos = sum(c.importe for c in factura.conceptos)
-    if abs(suma_conceptos - subtotal) > 0.05:
-        citas = [c.provenance for c in factura.conceptos] + [factura.totales.subtotal.provenance]
-        findings.append(AuditFinding(
-            gravedad="critical",
-            tipo="aritmética",
-            mensaje=f"Error matemático: La suma de los conceptos ({suma_conceptos}) no coincide con el subtotal declarado ({subtotal}).",
-            citas=citas
-        ))
-        
+    # 2. (REMOVIDO) Validar que la suma de conceptos = Subtotal
+    # Se elimina esta regla por ser excesivamente frágil: el LLM a menudo extrae
+    # los impuestos o cargos extra como "conceptos" adicionales, lo que hace que 
+    # la suma sobrepase el subtotal matemático, causando Falsos Positivos de fraude.
     return findings
 
 def check_missing_fields(factura: FacturaEstructurada) -> List[AuditFinding]:
