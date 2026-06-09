@@ -1,68 +1,59 @@
-# Cotejo: Motor Ortogonal de Auditoría Documental y Ruteo Heurístico (Identity Engineering)
+# Cotejo: Motor Dual de Auditoría Documental y Ruteo Heurístico
 
-Cotejo es un sistema avanzado de **Identity Engineering y KYC (Know Your Customer) B2B**, diseñado para la extracción estructurada, auditoría matemática y evaluación semántica de facturas de servicios. 
+Cotejo es un sistema de extracción y validación de facturas diseñado bajo una premisa central: **los Modelos de Lenguaje (LLMs) alucinan**. 
 
-A diferencia de los enfoques tradicionales que confían ciegamente en el Reconocimiento Óptico de Caracteres (OCR) o en Modelos de Lenguaje Grande (LLMs) propensos a alucinaciones, Cotejo propone una **arquitectura de doble motor ortogonal**: acopla la asombrosa capacidad de lectura no estructurada de un Modelo de Visión-Lenguaje (VLM) con un motor determinista de validación aritmética inflexible.
+En lugar de confiar el proceso completo a una IA generativa, el sistema aísla el proceso de lectura (delegado al LLM) del proceso de validación final (delegado a un código determinista tradicional). Esto permite rutar los documentos de forma segura sin depender de que un LLM tome la decisión de rechazo.
 
 ---
 
-## 1. Arquitectura del Sistema (Pipeline de Evaluación)
+## 1. Arquitectura del Sistema
 
-El flujo de procesamiento abandona el paradigma binario convencional (Válido/Inválido) y adopta una canalización en tres fases que pondera la **confiabilidad del dato extraído**:
+El pipeline de procesamiento se divide en tres capas con responsabilidades estrictamente separadas:
 
-### Fase 1: Extracción Multimodal y Heurística de Confianza Base
-El sistema prescinde de motores OCR frágiles basados en coordenadas. Utiliza rasterización de alta fidelidad (vía `PyMuPDF` a 150 DPI) para convertir documentos PDF complejos en tensores visuales que son procesados por **Gemini 2.5 Flash**. 
-*   **Temperatura 0.0:** Se fuerza al modelo fundacional a un estado casi-determinista para minimizar la estocasticidad en la extracción JSON (vía Pydantic).
-*   **Extraction Confidence Score:** El VLM emite una heurística probabilística auto-reportada (0.0 a 1.0) sobre la legibilidad del documento, penalizando ruido, desenfoque geométrico o degradación del escaneo.
+### Fase 1: Extracción Visual (VLM)
+Convierte documentos PDF en mapas de bits (imágenes a 150 DPI) usando `PyMuPDF`. Estas imágenes se envían a Gemini 2.5 Flash operando a Temperatura 0.0 para forzar la máxima predictibilidad en la estructura JSON devuelta.
+*   **Confidence Score:** El modelo de lenguaje emite un valor numérico estimado libremente por él mismo (0.0 a 1.0) sobre la legibilidad visual del documento. No es un valor estadísticamente calibrado.
 
-### Fase 2: Motor Determinista (El Ancla de la Verdad)
-Para contrarrestar la inherente falta de rigor matemático de los modelos transformadores, los datos extraídos pasan por un pipeline algorítmico estricto escrito en Python puro (`app/rules.py`).
-*   **Lógica Fundamental:** Verifica la universalidad contable: `Subtotal + Impuestos = Total Declarado` (tolerando sesgos de redondeo flotante de hasta ±0.05).
-*   **Campos Críticos:** Valida la presencia de invariantes legales como identificadores fiscales (CIF) y códigos de punto de suministro (CUPS).
-*   **Mitigación de Riesgo Estructural:** Este motor es **la única entidad autorizada** en el sistema para emitir un fallo de Rechazo Automático (`REJECT`). Garantiza *Zero-Hallucination* en la evaluación de fraude matemático.
+### Fase 2: Motor Determinista (Matemático)
+Script en Python puro (`app/rules.py`) que audita los datos que el LLM extrajo en la Fase 1.
+*   **Regla principal:** Verifica que `Subtotal + Impuestos = Total Declarado`.
+*   **Identificadores:** Revisa si existen las cadenas de texto del CIF y el CUPS.
+*   **Autoridad:** Es el **único** componente del sistema autorizado para emitir un fallo de Rechazo (`REJECT`). Como el código no alucina, garantiza que no habrá Falsos Positivos causados por un error lógico de la máquina.
 
 ### Fase 3: Análisis Semántico Contextual
-Se ejecuta un segundo LLM en paralelo para auditar anomalías de lógica de negocio o fraude blando (ej. tarifas energéticas incongruentes con el mercado, discrepancias de IVA injustificadas).
-*   **Limitación Deliberada de Autoridad:** Asumiendo empíricamente que los LLMs generan ruido (Falsos Positivos) en tareas de razonamiento contextual, **ningún hallazgo en esta capa puede desencadenar un rechazo duro**. La penalización se restringe a degradar el documento hacia una revisión humana obligatoria.
+Se ejecuta un segundo prompt al LLM buscando inconsistencias en la lógica de negocio (ej. IVA del 50%, tarifas incongruentes).
+*   **Limitación de Autoridad:** Como las inferencias del LLM en texto son ruidosas y propensas a Falsos Positivos, cualquier hallazgo en esta capa solo emite una advertencia (`Warning`). **Jamás** causa un rechazo automático; solo fuerza una revisión manual.
 
 ---
 
-## 2. Políticas de Ruteo y Toma de Decisiones (KYC Flow)
+## 2. Políticas de Ruteo
 
-El Orquestador Central (`app/agent.py`) consolida las señales de los tres ejes anteriores para emitir una `PolicyDecision` final, optimizando el rendimiento operativo (STP - *Straight Through Processing*):
+El Orquestador (`app/agent.py`) decide a dónde enviar la factura usando umbrales fijos sobre el Score de Confianza del LLM y las reglas deterministas:
 
-| Nivel de Ruteo | Lógica Computacional | Aplicación Práctica |
+*   **🟢 AUTO_APPROVE:** `Score > 0.90` y cero errores matemáticos. La factura se procesa sin intervención humana.
+*   **🟡 MANUAL_REVIEW:** `0.60 ≤ Score ≤ 0.90` o si el LLM detectó anomalías semánticas. Un operador humano debe revisar el documento.
+*   **🔴 REJECT:** `Score < 0.60` o fraude matemático (`Subtotal + Impuestos != Total`).
+
+---
+
+## 3. Metodología de Evaluación y Limitaciones (n=84)
+
+Resultados de la muestra ampliada ejecutada contra un inyector de anomalías sintéticas (*Baseline* vs *Ground Truth*):
+
+| Métrica | Motor Determinista (Python) | Motor Contextual (LLM) |
 |---|---|---|
-| **🟢 AUTO_APPROVE** | `Confidence > 0.90` ∧ `Det_Errors == 0` ∧ `Ctx_Warnings == 0` | Facturas perfectas, sin anomalías contables ni semánticas. Procesamiento *Zero-Touch*. |
-| **🟡 MANUAL_REVIEW** | `0.60 ≤ Confidence ≤ 0.90` ∨ `Ctx_Warnings > 0` | El documento presenta ambigüedades semánticas detectadas por el LLM o su degradación visual (ej. fotos borrosas) reduce la confianza estadística de la extracción. Requiere intervención humana (*Human-in-the-loop*). |
-| **🔴 REJECT** | `Confidence < 0.60` ∨ `Det_Errors > 0` | Fraude matemático algorítmicamente comprobado, omisión de identificadores legales, o documento ilegible/falsificado. |
+| **Precisión (Precision)** | 1.00 (100%) | N/A (Solo emite Warnings) |
+| **Recall (Tasa de Captura)** | 1.00 (100%) | No calibrado |
+| **Falsos Positivos (FP)** | 0 | 21 (Ruido del modelo) |
+| **Falsos Negativos (FN)** | 0 | 0 |
+
+> ***Nota sobre las Limitaciones del Sistema en Producción:** Los ceros absolutos en el motor determinista son un artefacto de hacer pruebas sobre PDFs sintéticos (nativos digitales). En el mundo real (al escalar a un dataset de 75,000 facturas escaneadas), los documentos estarán borrosos, arrugados o mal iluminados. Esto causará que el LLM se equivoque al leer los números (ej. confundir un 8 con un 3). Cuando el LLM extrae un número mal, la suma determinista en Python fallará, lo que levantará un **Falso Positivo**. Es decir: en producción, los fallos de lectura del LLM se transformarán invariablemente en alertas matemáticas. El ruteo mitiga esto mandando dichos casos a Revisión Manual.*
 
 ---
 
-## 3. Metodología de Evaluación Empírica
+## 4. Interfaz de Usuario y Ruteo
 
-El proyecto integra un arnés de pruebas de caja blanca (`eval/eval_pipeline.py`) y un inyector de entropía sintética (`data/inject_anomalies.py`) que somete el motor a distorsiones geométricas (rotación de *bounding boxes*, layouts tipo ticket) y anomalías contables calculadas.
-
-### Resultados de Evaluación Piloto (n=84)
-
-Resultados de la muestra ampliada (Baseline Esperado frente a *Ground Truth* inyectado):
-
-| Métrica | Motor Determinista (Matemático) | Motor Contextual (Semántico) |
-|---|---|---|
-| **Precisión (Precision)** | 1.00 (100%) | N/A (Restringido a emitir *Warnings*) |
-| **Recall (Tasa de Captura)** | 1.00 (100%) | *Pendiente de calibración estadística profunda* |
-| **Falsos Positivos (FP)** | 0 | 21 (Ruido y alucinaciones contextuales) |
-| **Falsos Negativos (FN)** | 0* | 0 |
-
-> ***Nota sobre Limitaciones del Baseline:** La perfección estadística del motor determinista (0 FP/FN) refleja exclusivamente el rendimiento sobre documentos de generación digital nativa (sintéticos). En un ecosistema de producción a gran escala (ej. dataset masivo de 75,000 facturas digitalizadas), la varianza óptica y el ruido de captura causarán invariablemente errores de inferencia en el motor VLM (ej. confundir un dígito '8' con un '3'). Estas disrupciones en la extracción provocarán fallos asimétricos en la validación aritmética, manifestándose empíricamente como **Falsos Positivos Deterministas**. La arquitectura asume esta degradación ruteando dichos artefactos eficientemente hacia `MANUAL_REVIEW`.*
-
-**Conclusión Arquitectónica:** Los datos demuestran el riesgo sistémico de otorgar autoridad de rechazo final a Modelos Fundacionales debido a su alta entropía (21 FPs). El aislamiento de responsabilidades entre el VLM (solo extracción) y el Algoritmo (validación de verdad) constituye el pilar de un sistema seguro y auditable para la capa institucional.
-
----
-
-## 4. Interfaz de Usuario (Demostración Visual)
-
-El sistema provee una capa de renderizado cliente-servidor que expone la trazabilidad de origen (*data provenance*), subrayando explícitamente en qué página del PDF se fundamentó el modelo para cada extracción y mostrando visualmente la política de ruteo aplicada:
+La interfaz web rutea los resultados demostrando el origen del dato (Página del PDF) y aplicando los colores de la política de decisión:
 
 <div align="center">
   <img src="imagenes_repo/Screenshot%202026-06-08%20225846.png" width="45%" />
@@ -76,41 +67,15 @@ El sistema provee una capa de renderizado cliente-servidor que expone la trazabi
 
 ---
 
-## 5. Pila Tecnológica y Dependencias
+## 5. Tecnologías y Despliegue Local
 
-- **Backend / API Core:** Python 3.12, FastAPI (Concurrencia asíncrona), Uvicorn.
-- **Validación de Datos:** Pydantic v2 (Validación de esquema estricto y tipado de Modelos de IA).
-- **Inteligencia Artificial:** Google GenAI SDK (Gemini 2.5 Flash / Pro Multimodal).
-- **Tratamiento Documental:** PyMuPDF (Rasterización de Tensores Vectoriales), ReportLab (Generación y mutación de PDF sintéticos).
-- **Resiliencia Operativa:** Tenacity (Implementación de *Exponential Backoff* para *Rate Limits* de API).
-- **Despliegue (Nube):** Docker, Google Cloud Run (Serverless), Google Cloud Build.
+- **API:** Python 3.12, FastAPI, Pydantic v2.
+- **Modelos:** Google GenAI SDK (Gemini 2.5 Flash / Pro).
+- **Procesamiento de PDF:** PyMuPDF.
 
----
-
-## 6. Despliegue y Ejecución en Entorno Local
-
-**Clonación y Preparación de Entorno:**
+**Ejecución:**
 ```bash
-git clone https://github.com/alexxcode/data-invoice.git
-cd data-invoice
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-**Configuración de Variables de Entorno (`.env`):**
-```env
-GEMINI_API_KEY="tu_api_key_de_google_ai_studio"
-```
-
-**Ejecución del Servidor ASGI:**
-```bash
+# Configurar GEMINI_API_KEY en archivo .env
 uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
-```
-*La API estará disponible en `http://localhost:8080/docs` y la interfaz web en `http://localhost:8080/ui/index.html`.*
-
-**Ejecución del Arnés de Evaluación Empírica:**
-*(Requiere aprovisionamiento de cuota de API corporativa debido a los límites estandarizados por minuto).*
-```bash
-python -m eval.eval_pipeline
 ```
