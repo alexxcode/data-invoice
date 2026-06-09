@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotejo | Auditoría Financiera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-mesh"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Cotejo.<span>AI</span></h1>
+            <p>Agente de auditoría de documentos estructurados con trazabilidad de origen.</p>
+        </header>
+
+        <main>
+            <section class="upload-section">
+                <div id="drop-zone" class="glass-card drop-zone">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <p>Arrastra los PDFs aquí o haz clic para subir</p>
+                    <input type="file" id="file-input" multiple accept="application/pdf">
+                </div>
+                <div id="upload-status" class="status-msg hidden"></div>
+            </section>
+
+            <section id="results-section" class="results-section hidden">
+                <h2>Informe de Auditoría</h2>
+                <div id="reports-container" class="reports-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

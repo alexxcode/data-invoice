@@ -1,0 +1,26 @@
+steps:
+# 1. Construir la imagen localmente en la máquina de Cloud Build
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/cotejo-api', '.']
+
+# 2. Empujar la imagen al Container Registry de GCP
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/cotejo-api']
+
+# 3. Desplegar la imagen en Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'cotejo-api'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/cotejo-api'
+  - '--region'
+  - 'us-central1'
+  - '--allow-unauthenticated'
+  - '--set-env-vars=GEMINI_API_KEY=${_GEMINI_API_KEY}'
+# Le decimos explícitamente a Google que use una máquina con más recursos 
+# para que PyMuPDF no agote la memoria.
+options:
+  machineType: 'E2_HIGHCPU_8'
