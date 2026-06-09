@@ -38,9 +38,11 @@ Resultados de la muestra piloto (Baseline Esperado frente a Ground Truth inyecta
 | **Precisión (Precision)** | 1.00 (100%) | N/A (Solo emite Warnings) |
 | **Recall (Tasa de Captura)** | 1.00 (100%) | (Pendiente de calibración profunda) |
 | **Falsos Positivos** | 0 | 3 (Alucinaciones sobre ruido) |
-| **Falsos Negativos** | 0 | 0 |
+| **Falsos Negativos** | 0* | 0 |
 
-**Conclusión Operativa:** La evaluación demuestra empíricamente el valor del diseño de doble motor. El LLM es extraordinario para la lectura no estructurada pero sufre de una tasa de Falsos Positivos (ruido) que hace inviable usarlo para tomar decisiones finales de rechazo. El Motor Determinista actúa como el ancla de la verdad, asegurando un sistema auditable y seguro para producción.
+> ***Nota sobre los ceros absolutos:** Esta perfección estadística (0 FP/FN) es un artefacto exclusivo del tamaño de la muestra (n=12) y de su naturaleza sintética (PDFs generados digitalmente). En un entorno de producción real a gran escala (ej. dataset de 75k facturas escaneadas), la degradación visual, mala iluminación o arrugas causarán que el modelo de extracción visual cometa errores de lectura (ej. confundir un 8 con un 3). Estos errores de lectura (OCR/VLM) provocarán que el motor determinista falle las sumas, levantando alertas de "fraude aritmético" que en la realidad serán **Falsos Positivos** provocados por ruido visual. Esta tabla debe recalibrarse con el dataset masivo.*
+
+**Conclusión Operativa:** La evaluación piloto demuestra empíricamente el valor del diseño de doble motor. El LLM es extraordinario para la lectura no estructurada pero sufre de una tasa de Falsos Positivos (ruido contextual) que hace inviable usarlo para tomar decisiones finales de rechazo. El Motor Determinista actúa como el ancla de la verdad, asegurando un sistema auditable y seguro para producción, asumiendo que los fallos de OCR derivarán facturas a revisión humana.
 
 ## Tecnologías Utilizadas
 
