@@ -57,11 +57,7 @@ def analyze_copy_move(doc: fitz.Document, doc_class: DocumentClass) -> List[Fore
                     
                     # Ignore self-match and very close matches
                     spatial_dist = np.linalg.norm(pt1 - pt2)
-                    if spatial_dist > 40:
-                        # Top 15% filter (ignore logos)
-                        if pt1[1] < h * 0.15 and pt2[1] < h * 0.15:
-                            continue
-                            
+                    if spatial_dist > 10:
                         # Displacement vector
                         disp = pt2 - pt1
                         # We only want one direction of the symmetric match

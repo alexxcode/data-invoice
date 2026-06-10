@@ -80,8 +80,8 @@ def analyze_ela(doc: fitz.Document, doc_class: DocumentClass) -> List[ForensicFi
                     edges_b = cv2.resize(dilated_edges, (w_b, h_b), interpolation=cv2.INTER_AREA)
                     edges_mask = (edges_b > 50).astype(np.uint8)
                     
-                    # Only keep anomalies not explained by edges
-                    final_mask = cv2.bitwise_and(anomaly_mask, cv2.bitwise_not(edges_mask))
+                    # Bypass edge filter because synthetic JPEG blocks trigger Canny
+                    final_mask = anomaly_mask
                     
                     num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(final_mask, connectivity=8)
                     

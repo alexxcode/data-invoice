@@ -38,18 +38,8 @@ def evaluate_dataset(gt_path):
         tamper_type = item["type"]
         is_tampered = item["class"] == "tampered"
         
-        # We need a PDF. If it's an image, wrap it in a PDF.
-        temp_pdf = file_path + ".temp.pdf"
-        if file_path.lower().endswith(('.png', '.jpg', '.jpeg')):
-            img = Image.open(file_path)
-            w, h = img.size
-            doc = fitz.open()
-            page = doc.new_page(width=w, height=h)
-            page.insert_image(fitz.Rect(0, 0, w, h), filename=file_path)
-            doc.save(temp_pdf)
-            pdf_to_analyze = temp_pdf
-        else:
-            pdf_to_analyze = file_path
+        # fitz.open can open images directly without wrapping them
+        pdf_to_analyze = file_path
             
         try:
             doc = fitz.open(pdf_to_analyze)
@@ -91,11 +81,7 @@ def evaluate_dataset(gt_path):
         except Exception as e:
             print(f"Error evaluating {file_path}: {e}")
         finally:
-            if file_path.lower().endswith(('.png', '.jpg', '.jpeg')) and os.path.exists(temp_pdf):
-                try:
-                    os.remove(temp_pdf)
-                except:
-                    pass
+            pass
 
     # Calculate final APCER/BPCER
     for cat, stats in metrics.items():

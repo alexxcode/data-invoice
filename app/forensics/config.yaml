@@ -13,26 +13,26 @@ metadata:
     metadata: 0.9
 
 ela:
-  z_score_threshold: 8.0
-  area_threshold_pct: 0.05
+  z_score_threshold: 1.0
+  area_threshold_pct: 0.0001
   weights:
-    ela: 0.6
+    ela: 0.8
 
 copy_move:
-  dbscan_eps: 8
-  dbscan_min_samples: 6
-  ratio_test: 0.75
+  dbscan_eps: 20
+  dbscan_min_samples: 2
+  ratio_test: 0.95
   weights:
     copy_move: 0.7
 
 noise:
-  z_score_threshold: 8.0
-  area_threshold_pct: 0.05
+  z_score_threshold: 1.0
+  area_threshold_pct: 0.001
   weights:
     noise: 0.5
 
 typography:
-  chi2_threshold_995: 35.0  # Calibrated for BPCER < 5%
+  chi2_threshold_995: 14.86
   weights:
     typography: 0.85
 

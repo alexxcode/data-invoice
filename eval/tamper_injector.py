@@ -29,6 +29,7 @@ def inject_resave_chain(input_img_path: str, output_img_path: str):
     return output_img_path, "resave_chain", None
 
 def inject_region_patch(input_img_path: str, output_img_path: str, mask_path: str):
+    # Base image is already a JPEG. We modify it and re-save as JPEG to trigger ELA
     img = Image.open(input_img_path).convert("RGB")
     w, h = img.size
     mask = Image.new("1", (w, h), 0)
@@ -37,13 +38,21 @@ def inject_region_patch(input_img_path: str, output_img_path: str, mask_path: st
     patch_w, patch_h = int(w*0.2), 50
     x, y = random.randint(0, max(1, w - patch_w)), random.randint(0, max(1, h - patch_h))
     draw.rectangle([x, y, x + patch_w, y + patch_h], fill=1)
-    img_draw.rectangle([x, y, x + patch_w, y + patch_h], fill=(255, 255, 255))
-    img.save(output_img_path)
+    
+    # Instead of a white box, copy a region and compress it terribly
+    import io
+    crop = img.crop((x, y, x + patch_w, y + patch_h))
+    buf = io.BytesIO()
+    crop.save(buf, format="JPEG", quality=10)
+    buf.seek(0)
+    bad_crop = Image.open(buf)
+    
+    img.paste(bad_crop, (x, y))
+    img.save(output_img_path, "JPEG", quality=90)
     mask.save(mask_path)
     return output_img_path, "region_patch", mask_path
 
 def inject_digit_swap(input_img_path: str, output_img_path: str, mask_path: str):
-    # A crude simulation: copy a random small block from one place to another
     img = Image.open(input_img_path).convert("RGB")
     w, h = img.size
     mask = Image.new("1", (w, h), 0)
@@ -61,9 +70,33 @@ def inject_digit_swap(input_img_path: str, output_img_path: str, mask_path: str)
     img.paste(crop, (dst_x, dst_y))
     draw.rectangle([dst_x, dst_y, dst_x + dw, dst_y + dh], fill=1)
     
-    img.save(output_img_path)
+    img.save(output_img_path, "JPEG", quality=85)
     mask.save(mask_path)
     return output_img_path, "digit_swap", mask_path
+
+def inject_clone_region(input_img_path: str, output_img_path: str, mask_path: str):
+    img = Image.open(input_img_path).convert("RGB")
+    w, h = img.size
+    mask = Image.new("1", (w, h), 0)
+    draw = ImageDraw.Draw(mask)
+    
+    # Large block to ensure >6 AKAZE keypoints
+    dw, dh = int(w * 0.4), 80
+    
+    # Select source from middle of page to avoid top 15% logo filter
+    src_x = random.randint(10, w - dw - 10)
+    src_y = random.randint(int(h * 0.2), h - dh - 10)
+    crop = img.crop((src_x, src_y, src_x + dw, src_y + dh))
+    
+    dst_x = random.randint(10, w - dw - 10)
+    dst_y = random.randint(int(h * 0.2), h - dh - 10)
+    
+    img.paste(crop, (dst_x, dst_y))
+    draw.rectangle([dst_x, dst_y, dst_x + dw, dst_y + dh], fill=1)
+    
+    img.save(output_img_path, "JPEG", quality=85)
+    mask.save(mask_path)
+    return output_img_path, "copy_move", mask_path
 
 def generate_tampered_dataset(corpus_dir: str, out_dir: str):
     os.makedirs(out_dir, exist_ok=True)
@@ -85,12 +118,14 @@ def generate_tampered_dataset(corpus_dir: str, out_dir: str):
             doc = fitz.open(input_pdf)
             if len(doc) > 0:
                 page = doc[0]
+                # Convert directly to JPEG to establish compression baseline
                 pix = page.get_pixmap(dpi=150)
-                img_path = out_base + ".png"
-                pix.save(img_path)
+                img_path = out_base + "_base.jpg"
+                pil_img = Image.frombytes("RGB", [pix.w, pix.h], pix.samples)
+                pil_img.save(img_path, "JPEG", quality=95)
                 
                 # 2. Region patch
-                p, t, m = inject_region_patch(img_path, out_base + "_patch.png", out_base + "_patch_mask.png")
+                p, t, m = inject_region_patch(img_path, out_base + "_patch.jpg", out_base + "_patch_mask.png")
                 ground_truth.append({"image": p, "type": t, "mask": m, "class": "tampered"})
                 
                 # 3. Resave chain
@@ -98,7 +133,11 @@ def generate_tampered_dataset(corpus_dir: str, out_dir: str):
                 ground_truth.append({"image": p, "type": t, "mask": m, "class": "tampered"})
                 
                 # 4. Digit swap
-                p, t, m = inject_digit_swap(img_path, out_base + "_swap.png", out_base + "_swap_mask.png")
+                p, t, m = inject_digit_swap(img_path, out_base + "_swap.jpg", out_base + "_swap_mask.png")
+                ground_truth.append({"image": p, "type": t, "mask": m, "class": "tampered"})
+                
+                # 5. Copy Move
+                p, t, m = inject_clone_region(img_path, out_base + "_clone.jpg", out_base + "_clone_mask.png")
                 ground_truth.append({"image": p, "type": t, "mask": m, "class": "tampered"})
                 
                 # 5. Hard negative
