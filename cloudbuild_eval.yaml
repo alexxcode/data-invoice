@@ -1,0 +1,9 @@
+steps:
+# 1. Build the image with tesseract installed
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'cotejo-eval', '.']
+
+# 2. Run the forensics evaluation using the generated dataset
+- name: 'cotejo-eval'
+  entrypoint: 'python'
+  args: ['eval/eval_forensics.py']

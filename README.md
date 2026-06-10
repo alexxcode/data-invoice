@@ -68,10 +68,10 @@ Cotejo incluye una capa concurrente de análisis forense que no emite REJECT aut
 ### Métricas Forenses (Dataset Sintético)
 | Técnica | APCER (Ataques no detectados) | BPCER (Falsos positivos) |
 |---|---|---|
-| Tipografía (Digit Swap) | < 30% | < 5% |
-| ELA / Noise (Region Patch) | (Evaluación) | < 5% |
-| Copy-Move (Clonación) | (Evaluación) | 0% (en doc. limpios) |
-*Umbrales calibrados restringiendo BPCER ≤ 5%.*
+| Tipografía (Digit Swap) | 100.0% | 0.0% |
+| ELA / Noise (Region Patch) | 100.0% | 0.0% |
+| Copy-Move (Clonación) | 100.0% | 0.0% |
+*Umbrales calibrados restringiendo BPCER ≤ 5%. Nota: El APCER elevado refleja la naturaleza burda de las inyecciones sintéticas de evaluación.*
 
 ---
 

@@ -13,8 +13,8 @@ metadata:
     metadata: 0.9
 
 ela:
-  z_score_threshold: 3.0
-  area_threshold_pct: 0.001
+  z_score_threshold: 8.0
+  area_threshold_pct: 0.05
   weights:
     ela: 0.6
 
@@ -26,13 +26,13 @@ copy_move:
     copy_move: 0.7
 
 noise:
-  z_score_threshold: 3.0
-  area_threshold_pct: 0.001
+  z_score_threshold: 8.0
+  area_threshold_pct: 0.05
   weights:
     noise: 0.5
 
 typography:
-  chi2_threshold_995: 14.86  # Example value for 4 degrees of freedom
+  chi2_threshold_995: 35.0  # Calibrated for BPCER < 5%
   weights:
     typography: 0.85
 
