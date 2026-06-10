@@ -106,6 +106,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
+            let forensicHtml = '';
+            if (report.forensic_report) {
+                const fr = report.forensic_report;
+                let riskScore = (fr.forensic_risk * 100).toFixed(1);
+                
+                let forensicFindingsHtml = '';
+                if (fr.findings.length === 0) {
+                    forensicFindingsHtml = '<p style="color: #94a3b8; font-style: italic;">No se detectaron manipulaciones forenses.</p>';
+                } else {
+                    fr.findings.forEach(f => {
+                        let overlayBtn = f.overlay_path ? `<button class="overlay-btn" onclick="showOverlay('${f.overlay_path}')">Ver Evidencia</button>` : '';
+                        forensicFindingsHtml += `
+                            <div class="finding ${f.severity}">
+                                <div class="finding-title">
+                                    <span>[FORENSE: ${f.technique.toUpperCase()}]</span>
+                                </div>
+                                <p>${f.explanation}</p>
+                                ${overlayBtn}
+                            </div>
+                        `;
+                    });
+                }
+
+                forensicHtml = `
+                    <div class="forensic-panel">
+                        <h4 style="margin-top: 1rem; border-top: 1px solid #334155; padding-top: 1rem;">Análisis Forense (Riesgo: ${riskScore}%)</h4>
+                        <div class="findings-list">
+                            ${forensicFindingsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
             card.innerHTML = `
                 <div class="report-header">
                     <h3>📄 ${report.archivo_origen}</h3>
@@ -114,8 +147,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="findings-list">
                     ${hallazgosHtml}
                 </div>
+                ${forensicHtml}
             `;
             reportsContainer.appendChild(card);
         });
     }
 });
+
+// Funciones globales para overlays
+function showOverlay(path) {
+    const modal = document.createElement('div');
+    modal.className = 'overlay-modal';
+    modal.innerHTML = `
+        <div class="overlay-content">
+            <span class="close-overlay" onclick="this.parentElement.parentElement.remove()">&times;</span>
+            <img src="${path}" alt="Evidencia Forense">
+        </div>
+    `;
+    document.body.appendChild(modal);
+}

@@ -4,6 +4,15 @@ python-multipart
 google-genai
 pydantic
 PyMuPDF
-Pillow
+Pillow>=10.0
 python-dotenv
 tenacity
+opencv-python-headless>=4.9
+scikit-image>=0.22
+scipy>=1.11
+celery
+pyyaml
+pytesseract
+pikepdf
+scikit-learn
+redis

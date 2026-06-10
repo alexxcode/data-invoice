@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from enum import Enum
+from app.forensics.models import ForensicReport
 
 # --- Modelos de Procedencia (Provenance) ---
 # Esto es crítico para la trazabilidad. Cada campo importante vendrá acompañado
@@ -73,3 +74,4 @@ class AuditReport(BaseModel):
     es_valida: bool = Field(description="False si contiene errores críticos o aritméticos")
     policy_decision: PolicyDecision = Field(default=PolicyDecision.MANUAL_REVIEW, description="Decisión de ruteo del sistema")
     confidence_score: float = Field(default=0.0, description="Nivel de confianza ponderado de la auditoría (0.0 a 1.0)")
+    forensic_report: Optional[ForensicReport] = Field(default=None, description="Reporte de la capa forense de píxeles y estructura")

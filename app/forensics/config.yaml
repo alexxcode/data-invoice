@@ -1,0 +1,41 @@
+# Umbrales y configuración para la capa forense
+
+metadata:
+  suspicious_producers:
+    - "Photoshop"
+    - "GIMP"
+    - "Illustrator"
+    - "iLovePDF"
+    - "Sejda"
+    - "PDFescape"
+    - "Canva"
+  weights:
+    metadata: 0.9
+
+ela:
+  z_score_threshold: 3.0
+  area_threshold_pct: 0.001
+  weights:
+    ela: 0.6
+
+copy_move:
+  dbscan_eps: 8
+  dbscan_min_samples: 6
+  ratio_test: 0.75
+  weights:
+    copy_move: 0.7
+
+noise:
+  z_score_threshold: 3.0
+  area_threshold_pct: 0.001
+  weights:
+    noise: 0.5
+
+typography:
+  chi2_threshold_995: 14.86  # Example value for 4 degrees of freedom
+  weights:
+    typography: 0.85
+
+scorer:
+  auto_approve_threshold: 0.25
+  requires_review_risk_threshold: 0.60

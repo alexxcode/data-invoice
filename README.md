@@ -51,9 +51,34 @@ Resultados de la muestra ampliada ejecutada contra un inyector de anomalías sin
 
 ---
 
-## 4. Interfaz de Usuario y Ruteo
+## 4. Capa Forense (Pixel-Level Tamper Detection)
 
-La interfaz web rutea los resultados demostrando el origen del dato (Página del PDF) y aplicando los colores de la política de decisión:
+Cotejo incluye una capa concurrente de análisis forense que no emite REJECT automático, sino que fuerza la revisión manual (`MANUAL_REVIEW`) apoyada en evidencias visuales (overlays).
+
+- **Metadatos Estructurales**: Detección de actualizaciones incrementales y editores sospechosos (pikepdf/PyMuPDF).
+- **Tipografía**: Inconsistencias calculadas por Mahalanobis (altura, grosor de trazo, densidad) en texto y OCR.
+- **ELA y Ruido**: Error Level Analysis y Wavelet Residual para documentos escaneados.
+- **Copy-Move**: Detección de clonaciones de píxeles vía keypoints AKAZE y DBSCAN.
+
+### Limitaciones de la Capa Forense
+1. **Manipulaciones Sintéticas**: Las manipulaciones de evaluación son sintéticas; un falsificador profesional que reimprime y reescanea el documento elimina la mayoría de las trazas de píxel (solo sobreviven typography y señales de contenido).
+2. **Archivos Nativos**: ELA y noise no aplican a PDFs nativos; en ese dominio la cobertura recae en metadata y typography.
+3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
+
+### Métricas Forenses (Dataset Sintético)
+| Técnica | APCER (Ataques no detectados) | BPCER (Falsos positivos) |
+|---|---|---|
+| Tipografía (Digit Swap) | < 30% | < 5% |
+| ELA / Noise (Region Patch) | (Evaluación) | < 5% |
+| Copy-Move (Clonación) | (Evaluación) | 0% (en doc. limpios) |
+*Umbrales calibrados restringiendo BPCER ≤ 5%.*
+
+---
+
+## 5. Interfaz de Usuario y Ruteo
+
+La interfaz web rutea los resultados demostrando el origen del dato (Página del PDF) y aplicando los colores de la política de decisión, incluyendo un **Panel Forense** para evaluar visualmente las alertas de fraude a nivel de píxel:
+
 
 <div align="center">
   <img src="imagenes_repo/Screenshot%202026-06-08%20225846.png" width="45%" />
