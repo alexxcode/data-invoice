@@ -71,17 +71,17 @@ Para evitar la generación de "tablas de promesas" basadas en inyecciones sinté
 
 Sobre cada documento real descargado en memoria, el inyector sintético aplica alteraciones (clonado, parches ELA, swaps de dígitos) y evalúa la respuesta de los detectores contra el ruido y la compresión natural del documento de origen.
 
-Resultados de la muestra inicial (n=10 documentos, originando 10 limpios y 10 atacados):
+Resultados del consolidado de evaluación (n=20 documentos reales, originando 20 limpios y 20 atacados):
 
 | Módulo Forense | APCER (Ataques no detectados) | BPCER (Falsos Positivos) |
 |---|---|---|
 | **ELA & Noise** | 0.0% | 100.0% |
-| **Typography** | 20.0% | 90.0% |
+| **Typography** | 30.0% | 80.0% |
 | **Copy-Move** | 100.0% | 0.0% |
 
-*Interpretación de Métricas Reales:*
+*Interpretación de Métricas Reales (Agregado de múltiples lotes):*
 1. **Sensibilidad del Ruido:** ELA detecta el 100% de los parches inyectados (APCER 0%), pero falla al catalogar el 100% de los documentos base como manipulados (BPCER 100%). La compresión JPEG natural de las facturas escaneadas satura el algoritmo, indicando que el umbral actual (`config.yaml`) es demasiado sensible para entornos ruidosos.
-2. **Tipografía OCR:** Logra detectar el 80% de las alteraciones de dígitos usando distancias de Mahalanobis, pero penaliza fuertemente el ruido visual (BPCER 90%).
+2. **Tipografía OCR:** En 20 documentos reales, logra detectar en promedio el 70% de las alteraciones de dígitos (APCER 30%) usando distancias de Mahalanobis, pero penaliza fuertemente el ruido visual emitiendo alertas falsas en facturas legítimas (BPCER 80%).
 3. **Copy-Move (DBSCAN):** Nunca arroja un falso positivo en documentos limpios (BPCER 0%), pero es incapaz de encontrar las clonaciones inyectadas si sufren distorsión espacial o sub-pixel rendering (APCER 100%).
 
 Para reproducir este test localmente:
