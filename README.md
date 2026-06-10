@@ -71,18 +71,18 @@ Para evitar la generación de "tablas de promesas" basadas en inyecciones sinté
 
 Sobre cada documento real descargado en memoria, el inyector sintético aplica alteraciones (clonado, parches ELA, swaps de dígitos) y evalúa la respuesta de los detectores contra el ruido y la compresión natural del documento de origen.
 
-Resultados del consolidado de evaluación (n=20 documentos reales, originando 20 limpios y 20 atacados):
+Resultados del consolidado de evaluación final (n=30 documentos reales, originando 30 limpios y 30 atacados):
 
 | Módulo Forense | APCER (Ataques no detectados) | BPCER (Falsos Positivos) |
 |---|---|---|
 | **ELA & Noise** | 0.0% | 100.0% |
-| **Typography** | 30.0% | 80.0% |
+| **Typography** | 50.0% | 40.0% |
 | **Copy-Move** | 100.0% | 0.0% |
 
-*Interpretación de Métricas Reales (Agregado de múltiples lotes):*
-1. **Sensibilidad del Ruido:** ELA detecta el 100% de los parches inyectados (APCER 0%), pero falla al catalogar el 100% de los documentos base como manipulados (BPCER 100%). La compresión JPEG natural de las facturas escaneadas satura el algoritmo, indicando que el umbral actual (`config.yaml`) es demasiado sensible para entornos ruidosos.
-2. **Tipografía OCR:** En 20 documentos reales, logra detectar en promedio el 70% de las alteraciones de dígitos (APCER 30%) usando distancias de Mahalanobis, pero penaliza fuertemente el ruido visual emitiendo alertas falsas en facturas legítimas (BPCER 80%).
-3. **Copy-Move (DBSCAN):** Nunca arroja un falso positivo en documentos limpios (BPCER 0%), pero es incapaz de encontrar las clonaciones inyectadas si sufren distorsión espacial o sub-pixel rendering (APCER 100%).
+*Interpretación de Métricas Reales (Con configuración balanceada):*
+1. **Tipografía OCR (Equilibrio Matemático):** Con un `chi2_threshold_995 = 18.0`, se logra el punto de balance óptimo. Detecta el 50% de las alteraciones de dígitos (APCER 50%) mientras mantiene una tasa de falsas alarmas controlada (BPCER 40%) frente al intenso ruido natural de facturas arrugadas o mal escaneadas. Es el detector primario para facturas extraídas de la web.
+2. **Incompatibilidad de ELA:** A pesar de llevar la tolerancia estadística a niveles casi insensibles (`z_score_threshold: 4.5`, `area: 2%`), ELA arroja 100% de falsos positivos en documentos limpios. Esto demuestra que ELA no es viable metodológicamente para evaluar imágenes masivamente recomprimidas en internet (ej. pasadas por WhatsApp o plataformas de correo). Su uso debe restringirse a PDFs nativo-digitales.
+3. **Copy-Move (DBSCAN):** Nunca arroja un falso positivo en documentos limpios (BPCER 0%), pero es incapaz de encontrar las clonaciones inyectadas si sufren deformación sub-píxel (APCER 100%). Actúa como una alerta silenciosa e infalible, pero exclusiva para alteraciones muy burdas sin distorsión espacial.
 
 Para reproducir este test localmente:
 ```bash

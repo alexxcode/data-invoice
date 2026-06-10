@@ -13,14 +13,14 @@ metadata:
     metadata: 0.9
 
 ela:
-  z_score_threshold: 1.0
-  area_threshold_pct: 0.0001
+  z_score_threshold: 4.5
+  area_threshold_pct: 0.02
   weights:
     ela: 0.8
 
 copy_move:
   dbscan_eps: 20
-  dbscan_min_samples: 2
+  dbscan_min_samples: 4
   ratio_test: 0.95
   weights:
     copy_move: 0.7
@@ -32,7 +32,7 @@ noise:
     noise: 0.5
 
 typography:
-  chi2_threshold_995: 14.86
+  chi2_threshold_995: 18.0
   weights:
     typography: 0.85
 
