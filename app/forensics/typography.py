@@ -11,6 +11,8 @@ from scipy.linalg import inv
 from typing import List
 from .models import ForensicFinding, Severity, DocumentClass
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
 def get_stroke_features(crop_gray: np.ndarray):
     # Otsu thresholding
     _, binary = cv2.threshold(crop_gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)

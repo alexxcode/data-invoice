@@ -65,14 +65,29 @@ Cotejo incluye una capa concurrente de análisis forense que no emite REJECT aut
 2. **Archivos Nativos**: ELA y noise no aplican a PDFs nativos; en ese dominio la cobertura recae en metadata y typography.
 3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
 
-### Métricas Forenses (Dataset Sintético)
+### Métricas Forenses (Evaluación con Datos Reales en Streaming)
+
+Para evitar la generación de "tablas de promesas" basadas en inyecciones sintéticas ideales, la capa forense se evalúa **contra datos reales de internet**. Se utiliza el dataset público `mychen76/invoices-and-receipts_ocr_v1` consumido bajo demanda (streaming via HuggingFace).
+
+Sobre cada documento real descargado en memoria, el inyector sintético aplica alteraciones (clonado, parches ELA, swaps de dígitos) y evalúa la respuesta de los detectores contra el ruido y la compresión natural del documento de origen.
+
+Resultados de la muestra inicial (n=10 documentos, originando 10 limpios y 10 atacados):
+
 | Módulo Forense | APCER (Ataques no detectados) | BPCER (Falsos Positivos) |
 |---|---|---|
 | **ELA & Noise** | 0.0% | 100.0% |
-| **Typography** | 60.0% | 20.0% |
+| **Typography** | 20.0% | 90.0% |
 | **Copy-Move** | 100.0% | 0.0% |
 
-*Nota sobre las métricas:* Se han ajustado los umbrales de sensibilidad en `config.yaml` (`z_score_threshold: 1.0` y filtros de bordes eliminados en ELA) para forzar la detección de artefactos de compresión JPEG sintéticos (Opción A implementada). Esto logra un APCER de 0% en la capa de ELA/Noise (100% de detecciones de ataques), pero a expensas de elevar drásticamente los falsos positivos (BPCER 100%). El módulo Copy-Move requiere mayor calibración geométrica debido a distorsiones espaciales en la síntesis de clonación de parches.
+*Interpretación de Métricas Reales:*
+1. **Sensibilidad del Ruido:** ELA detecta el 100% de los parches inyectados (APCER 0%), pero falla al catalogar el 100% de los documentos base como manipulados (BPCER 100%). La compresión JPEG natural de las facturas escaneadas satura el algoritmo, indicando que el umbral actual (`config.yaml`) es demasiado sensible para entornos ruidosos.
+2. **Tipografía OCR:** Logra detectar el 80% de las alteraciones de dígitos usando distancias de Mahalanobis, pero penaliza fuertemente el ruido visual (BPCER 90%).
+3. **Copy-Move (DBSCAN):** Nunca arroja un falso positivo en documentos limpios (BPCER 0%), pero es incapaz de encontrar las clonaciones inyectadas si sufren distorsión espacial o sub-pixel rendering (APCER 100%).
+
+Para reproducir este test localmente:
+```bash
+python eval/eval_huggingface.py --batch_size 10 --start_idx 0
+```
 
 ---
 
