@@ -66,12 +66,13 @@ Cotejo incluye una capa concurrente de análisis forense que no emite REJECT aut
 3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
 
 ### Métricas Forenses (Dataset Sintético)
-| Técnica | APCER (Ataques no detectados) | BPCER (Falsos positivos) |
+| Módulo Forense | APCER (Ataques no detectados) | BPCER (Falsos Positivos) |
 |---|---|---|
-| Tipografía (Digit Swap) | 100.0% | 0.0% |
-| ELA / Noise (Region Patch) | 100.0% | 0.0% |
-| Copy-Move (Clonación) | 100.0% | 0.0% |
-*Umbrales calibrados restringiendo BPCER ≤ 5%. Nota: El APCER elevado refleja la naturaleza burda de las inyecciones sintéticas de evaluación.*
+| **ELA & Noise** | 0.0% | 100.0% |
+| **Typography** | 60.0% | 20.0% |
+| **Copy-Move** | 100.0% | 0.0% |
+
+*Nota sobre las métricas:* Se han ajustado los umbrales de sensibilidad en `config.yaml` (`z_score_threshold: 1.0` y filtros de bordes eliminados en ELA) para forzar la detección de artefactos de compresión JPEG sintéticos (Opción A implementada). Esto logra un APCER de 0% en la capa de ELA/Noise (100% de detecciones de ataques), pero a expensas de elevar drásticamente los falsos positivos (BPCER 100%). El módulo Copy-Move requiere mayor calibración geométrica debido a distorsiones espaciales en la síntesis de clonación de parches.
 
 ---
 
