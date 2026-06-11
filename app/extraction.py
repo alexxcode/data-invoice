@@ -13,12 +13,18 @@ from app.schema import FacturaEstructurada
 
 load_dotenv()
 
-# Inicializa el cliente explícitamente (evita problemas si .env está en blanco)
-api_key = os.environ.get("GEMINI_API_KEY")
-if not api_key:
-    raise ValueError("GEMINI_API_KEY no encontrada.")
-    
-client = genai.Client(api_key=api_key)
+# Cliente lazy: el módulo debe ser importable sin API key (tests, capa forense,
+# CI). La clave solo se exige al momento de llamar a Gemini.
+_client = None
+
+def get_client() -> genai.Client:
+    global _client
+    if _client is None:
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY no encontrada.")
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 @retry(wait=wait_exponential(multiplier=2, min=10, max=120), stop=stop_after_attempt(10))
 def extract_invoice_data(pdf_path: str) -> FacturaEstructurada:
@@ -54,7 +60,7 @@ def extract_invoice_data(pdf_path: str) -> FacturaEstructurada:
     contents = images + [prompt]
     
     # Llamada a Gemini 2.5 Flash
-    response = client.models.generate_content(
+    response = get_client().models.generate_content(
         model='gemini-2.5-flash',
         contents=contents,
         config=types.GenerateContentConfig(

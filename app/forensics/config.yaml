@@ -1,4 +1,10 @@
-# Umbrales y configuración para la capa forense
+# Umbrales y configuración para la capa forense.
+#
+# PROCEDENCIA (Fase 0 de powerUp.md): todos los valores se restauraron a los del
+# spec original (instructivo_forense.md) tras detectar que habían sido relajados
+# persiguiendo métricas sobre el set de reporte (Goodhart). Cualquier
+# recalibración futura debe hacerse SOLO sobre el split de calibración
+# (powerUp.md §4, Fase 1) y documentarse aquí con la corrida de origen.
 
 metadata:
   suspicious_producers:
@@ -9,30 +15,43 @@ metadata:
     - "Sejda"
     - "PDFescape"
     - "Canva"
+  # Mínimo de spans en la página para que la regla de "fuente usada una sola
+  # vez" sea estadísticamente informativa (con pocos spans toda fuente es única)
+  min_spans_for_font_rule: 5
   weights:
     metadata: 0.9
 
 ela:
-  z_score_threshold: 4.5
-  area_threshold_pct: 0.02
+  # spec §4: z > 3.0, componente conexo > 0.1% de la página, filtro de bordes activo
+  z_score_threshold: 3.0
+  area_threshold_pct: 0.001
+  edge_filter: true
   weights:
-    ela: 0.8
+    ela: 0.6
 
 copy_move:
-  dbscan_eps: 20
-  dbscan_min_samples: 4
-  ratio_test: 0.95
+  # spec §5: eps=8, min_samples=6, ratio de Lowe 0.75, distancia espacial mínima 40px,
+  # coherencia de desplazamiento ±2px
+  dbscan_eps: 8
+  dbscan_min_samples: 6
+  ratio_test: 0.75
+  min_spatial_dist_px: 40
+  coherence_tolerance_px: 2
   weights:
     copy_move: 0.7
 
 noise:
-  z_score_threshold: 1.0
+  # spec §6: mismo esquema z-score que ELA
+  z_score_threshold: 3.0
   area_threshold_pct: 0.001
   weights:
     noise: 0.5
 
 typography:
-  chi2_threshold_995: 18.0
+  # chi² al 99.5% con 4 grados de libertad = 14.86 (spec §7)
+  chi2_threshold_995: 14.86
+  # HIGH solo si dist² supera el umbral por este factor; si no, MEDIUM
+  high_severity_factor: 2.0
   weights:
     typography: 0.85
 

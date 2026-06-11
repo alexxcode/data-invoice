@@ -34,11 +34,17 @@ ENV/
 
 # Data y archivos locales
 data/samples/
+data/hf_eval/
+data/benchmark_v1/
+data/overlays/
 *.pdf
 *.zip
 *.json
 !data/samples/.gitkeep
 !data/ground_truth_schema.json
+# Evidencia de evaluación (crudos citados en powerUp.md)
+!data/eval_calib.json
+!data/eval_test.json
 
 # IDEs
 .idea/

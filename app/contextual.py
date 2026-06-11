@@ -10,16 +10,21 @@ from app.schema import FacturaEstructurada, AuditFinding, Provenance
 
 load_dotenv()
 
-api_key = os.environ.get("GEMINI_API_KEY")
-if not api_key:
-    # Fallback seguro para que no falle al importar si no hay API key aún en CI
-    client = None
-else:
-    client = genai.Client(api_key=api_key)
+# Cliente lazy: importable sin API key (tests, CI).
+_client = None
+
+def get_client():
+    global _client
+    if _client is None:
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            return None
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 @retry(wait=wait_exponential(multiplier=2, min=5, max=60), stop=stop_after_attempt(8))
 def _call_gemini_pro_with_retry(prompt: str) -> str:
-    response = client.models.generate_content(
+    response = get_client().models.generate_content(
         model='gemini-2.5-pro',
         contents=prompt,
         config=types.GenerateContentConfig(
@@ -34,7 +39,7 @@ def flag_contextual_inconsistencies(factura: FacturaEstructurada) -> list[AuditF
     Usa Gemini 2.5 Pro para evaluar lógicamente el contenido estructurado de la factura
     y buscar anomalías de negocio (tarifas incongruentes, impuestos atípicos, etc).
     """
-    if not client:
+    if not get_client():
         return []
         
     factura_json = factura.model_dump_json(indent=2)

@@ -65,29 +65,41 @@ Cotejo incluye una capa concurrente de análisis forense que no emite REJECT aut
 2. **Archivos Nativos**: ELA y noise no aplican a PDFs nativos; en ese dominio la cobertura recae en metadata y typography.
 3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
 
-### Métricas Forenses (Evaluación con Datos Reales en Streaming)
+### Métricas Forenses (baseline honesto, Fase 0 de powerUp.md)
 
-Para evitar la generación de "tablas de promesas" basadas en inyecciones sintéticas ideales, la capa forense se evalúa **contra datos reales de internet**. Se utiliza el dataset público `mychen76/invoices-and-receipts_ocr_v1` consumido bajo demanda (streaming via HuggingFace).
+> **Nota de retractación metodológica (2026-06-11):** las métricas forenses publicadas
+> anteriormente en este README quedan retiradas. El scoring contaba como detección cualquier
+> alerta en la página (sin verificar que señalara la región manipulada), no había split de
+> calibración/test, y los umbrales se habían ajustado sobre el mismo set reportado. El detalle
+> completo del diagnóstico y el plan de corrección están en [powerUp.md](powerUp.md).
 
-Sobre cada documento real descargado en memoria, el inyector sintético aplica alteraciones (clonado, parches ELA, swaps de dígitos) y evalúa la respuesta de los detectores contra el ruido y la compresión natural del documento de origen.
+La evaluación actual usa documentos reales (`mychen76/invoices-and-receipts_ocr_v1`, HuggingFace)
+con manipulaciones sintéticas inyectadas, y exige **localización**: un ataque solo cuenta como
+detectado si algún hallazgo del módulo solapa la región manipulada (IoU ≥ 0.2 contra la máscara
+ground-truth). Umbrales congelados a los valores de especificación; split test reportado.
 
-Resultados del consolidado de evaluación empírica (n=40 documentos reales, originando 40 limpios y 40 atacados):
+| Módulo | APCER página | APCER localizado (IoU≥0.2) | BPCER | n (pos/neg) |
+|---|---|---|---|---|
+| **Typography** | 25% | **100%** | **70%** | 20/20 |
+| **ELA & Noise** | 30% | **100%** | **70%** | 20/20 |
+| **Copy-Move** | **100%** | 100% | 0% | 20/20 |
 
-| Módulo Forense | APCER (Ataques no detectados) | BPCER (Falsos Positivos) |
-|---|---|---|
-| **ELA & Noise** | 0.0% | 100.0% |
-| **Typography** | 50.0% | 45.0% |
-| **Copy-Move** | 100.0% | 0.0% |
+*Lectura honesta:* **ningún módulo localiza ninguna manipulación**. Las "detecciones" a nivel
+página de typography y ELA/noise coexisten con tasas de falsa alarma del 60-80% en documentos
+limpios: son indistinguibles de ruido que cae por azar en una página manipulada. Parte del
+resultado refleja también que los ataques sintéticos actuales son inválidos como medida de
+capacidad (bloques aleatorios en posiciones aleatorias). La construcción de un benchmark de
+ataques realistas con cadenas de transmisión (recompresión, WhatsApp, print-scan) es la Fase 1
+de [powerUp.md](powerUp.md).
 
-*Interpretación de Métricas Reales:*
-1. **Tipografía OCR (Equilibrio Matemático):** Con un `chi2_threshold_995 = 18.0`, se logra el punto de balance óptimo. Detecta el 50% de las alteraciones de dígitos (APCER 50%) mientras mantiene una tasa de falsas alarmas controlada (BPCER 45%) frente al intenso ruido natural de facturas arrugadas o mal escaneadas. Es el detector primario para facturas extraídas de la web.
-2. **Incompatibilidad de ELA:** A pesar de llevar la tolerancia estadística a niveles casi insensibles (`z_score_threshold: 4.5`, `area: 2%`), ELA arroja 100% de falsos positivos en documentos limpios. Esto demuestra que ELA no es viable metodológicamente para evaluar imágenes masivamente recomprimidas en internet (ej. pasadas por WhatsApp o plataformas de correo). Su uso debe restringirse a PDFs nativo-digitales.
-3. **Copy-Move (DBSCAN):** Nunca arroja un falso positivo en documentos limpios (BPCER 0%), pero es incapaz de encontrar las clonaciones inyectadas si sufren deformación sub-píxel (APCER 100%). Actúa como una alerta silenciosa e infalible, pero exclusiva para alteraciones muy burdas sin distorsión espacial.
-
-Para reproducir este test localmente:
+Para reproducir este resultado offline (los artefactos de imagen no se versionan por tamaño;
+si no existen localmente, el modo streaming los regenera con semillas fijas usando
+`--batch_size 41 --regenerate`):
 ```bash
-python eval/eval_huggingface.py --batch_size 10 --start_idx 0
+python eval/eval_huggingface.py --local_dir data/hf_eval --split test
 ```
+Los resultados crudos de la corrida citada están versionados en `data/eval_calib.json` y
+`data/eval_test.json`.
 
 ---
 

@@ -1,0 +1,2112 @@
+{
+  "split": "test",
+  "docs": 20,
+  "stats": {
+    "typography": {
+      "pos": 20,
+      "page_hits": 15,
+      "loc_hits": 0,
+      "neg": 20,
+      "fp": 14
+    },
+    "ela_noise": {
+      "pos": 20,
+      "page_hits": 14,
+      "loc_hits": 0,
+      "neg": 20,
+      "fp": 14
+    },
+    "copy_move": {
+      "pos": 20,
+      "page_hits": 0,
+      "loc_hits": 0,
+      "neg": 20,
+      "fp": 0
+    }
+  },
+  "rows": [
+    {
+      "doc": 1,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5471763806263198,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 1,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5471763806263198,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 1,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5282175054098306,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 1,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5282175054098306,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 3,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5242250307177513,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1781.76,
+            368.64,
+            1812.48
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 3,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5242250307177513,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1781.76,
+            368.64,
+            1812.48
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 3,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5170461322391694,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1781.76,
+            368.64,
+            1812.48
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 3,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "high",
+          "score": 1.0,
+          "bbox": [
+            1608.24,
+            1368.96,
+            1683.84,
+            1404.24
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1781.76,
+            368.64,
+            1812.48
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 5,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 5,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 5,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 5,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 7,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5779332134949761,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            601.68,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 7,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5779332134949761,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            601.68,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 7,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.554809361814859,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            601.68,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 7,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.554809361814859,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            601.68,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 9,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.72644492993287,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.6261120406459981,
+          "bbox": [
+            1050.24,
+            2224.7999999999997,
+            1080.96,
+            2242.7999999999997
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5626635746331732,
+          "bbox": [
+            1554.96,
+            2224.7999999999997,
+            1584.96,
+            2243.52
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1996.8,
+            368.64,
+            2027.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 9,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.72644492993287,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.6261120406459981,
+          "bbox": [
+            1050.24,
+            2224.7999999999997,
+            1080.96,
+            2242.7999999999997
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5626635746331732,
+          "bbox": [
+            1554.96,
+            2224.7999999999997,
+            1584.96,
+            2243.52
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1996.8,
+            368.64,
+            2027.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 9,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7473143324502436,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5511482577883283,
+          "bbox": [
+            1050.24,
+            2224.7999999999997,
+            1080.96,
+            2242.7999999999997
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5491007007718752,
+          "bbox": [
+            1554.96,
+            2224.7999999999997,
+            1584.96,
+            2243.52
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1996.8,
+            368.64,
+            2027.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 9,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7418914926971053,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5109979878065531,
+          "bbox": [
+            1554.96,
+            2224.7999999999997,
+            1584.96,
+            2243.52
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1996.8,
+            368.64,
+            2027.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 11,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8536374457016012,
+          "bbox": [
+            399.84,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5814874487901149,
+          "bbox": [
+            467.28,
+            1116.24,
+            479.28,
+            1134.96
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 11,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8536374457016012,
+          "bbox": [
+            399.84,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5814874487901149,
+          "bbox": [
+            467.28,
+            1116.24,
+            479.28,
+            1134.96
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 11,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8654297430752665,
+          "bbox": [
+            399.84,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5884556563386669,
+          "bbox": [
+            467.28,
+            1116.24,
+            479.28,
+            1134.96
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 11,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8704995742744331,
+          "bbox": [
+            399.84,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5889962837431265,
+          "bbox": [
+            467.28,
+            1116.24,
+            479.28,
+            1134.96
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 13,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5441553112569262,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7334490289518331,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 13,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5441553112569262,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7334490289518331,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 13,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5530563150764228,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7581742806963457,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 13,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5479378212647221,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7364412844358472,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 15,
+      "attack": "clean",
+      "label": "clean",
+      "findings": []
+    },
+    {
+      "doc": 15,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": []
+    },
+    {
+      "doc": 15,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": []
+    },
+    {
+      "doc": 15,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5609765335384286,
+          "bbox": [
+            404.15999999999997,
+            899.52,
+            434.15999999999997,
+            911.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 17,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5466520070361501,
+          "bbox": [
+            1552.8,
+            1965.36,
+            1584.96,
+            1984.8
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 17,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5466520070361501,
+          "bbox": [
+            1552.8,
+            1965.36,
+            1584.96,
+            1984.8
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 17,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.552563758361047,
+          "bbox": [
+            1552.8,
+            1965.36,
+            1584.96,
+            1984.8
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 17,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5508998807127997,
+          "bbox": [
+            1552.8,
+            1965.36,
+            1584.96,
+            1984.8
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1751.04,
+            337.91999999999996,
+            1781.76
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 19,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8986630603808725,
+          "bbox": [
+            396.71999999999997,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 19,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8986630603808725,
+          "bbox": [
+            396.71999999999997,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 19,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.89747089128248,
+          "bbox": [
+            396.71999999999997,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 19,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8863980613699681,
+          "bbox": [
+            396.71999999999997,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 21,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5359008197955931,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 21,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5359008197955931,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 21,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5548568395942142,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.0,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 21,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5476066668080524,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.0,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 23,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 23,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 23,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 23,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 25,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 25,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 25,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 25,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 27,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7354302109699226,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.6511659154157882,
+          "bbox": [
+            1554.24,
+            2095.2,
+            1584.96,
+            2113.92
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1873.9199999999998,
+            368.64,
+            1904.6399999999999
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 27,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7368829342788102,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.647629072392276,
+          "bbox": [
+            1554.24,
+            2095.2,
+            1584.96,
+            2113.92
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1873.9199999999998,
+            368.64,
+            1904.6399999999999
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 27,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7126315781516549,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.6354496313636199,
+          "bbox": [
+            1554.24,
+            2095.2,
+            1584.96,
+            2113.92
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1873.9199999999998,
+            368.64,
+            1904.6399999999999
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 27,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.7126315781516549,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.6354496313636199,
+          "bbox": [
+            1554.24,
+            2095.2,
+            1584.96,
+            2113.92
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1873.9199999999998,
+            368.64,
+            1904.6399999999999
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 29,
+      "attack": "clean",
+      "label": "clean",
+      "findings": []
+    },
+    {
+      "doc": 29,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": []
+    },
+    {
+      "doc": 29,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5107638065516963,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 29,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": []
+    },
+    {
+      "doc": 31,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8658835606444669,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "high",
+          "score": 1.0,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 31,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8658835606444669,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "high",
+          "score": 1.0,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 31,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.856391725873194,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5978176096156248,
+          "bbox": [
+            194.4,
+            1053.84,
+            211.67999999999998,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 31,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "high",
+          "score": 1.0,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "high",
+          "score": 1.0,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1812.48,
+            368.64,
+            1843.1999999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 33,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 33,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 33,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 33,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1228.8,
+            368.64,
+            1259.52
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 35,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8348281512526133,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1843.1999999999998,
+            368.64,
+            1873.9199999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 35,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8348281512526133,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1843.1999999999998,
+            368.64,
+            1873.9199999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 35,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.815603877674072,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.0,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5114646039177974,
+          "bbox": [
+            1553.52,
+            2063.52,
+            1584.96,
+            2082.24
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1843.1999999999998,
+            368.64,
+            1873.9199999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 35,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8252763319430709,
+          "bbox": [
+            397.68,
+            87.11999999999999,
+            600.0,
+            115.44
+          ]
+        },
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5193839162467215,
+          "bbox": [
+            1553.52,
+            2063.52,
+            1584.96,
+            2082.24
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1843.1999999999998,
+            337.91999999999996,
+            1873.9199999999998
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 37,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5077998724536457,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 37,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5077998724536457,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 37,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5315441307376626,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 37,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.5315441307376626,
+          "bbox": [
+            194.4,
+            1053.84,
+            212.4,
+            1071.84
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.013725490196078431,
+          "bbox": [
+            153.6,
+            1198.08,
+            368.64,
+            1228.8
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 39,
+      "attack": "clean",
+      "label": "clean",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8396387116009163,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1720.32,
+            337.91999999999996,
+            1751.04
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 39,
+      "attack": "patch",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8396387116009163,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1720.32,
+            337.91999999999996,
+            1751.04
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 39,
+      "attack": "swap",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8555632082870034,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1720.32,
+            337.91999999999996,
+            1751.04
+          ]
+        }
+      ]
+    },
+    {
+      "doc": 39,
+      "attack": "clone",
+      "label": "tampered",
+      "findings": [
+        {
+          "technique": "typography",
+          "severity": "medium",
+          "score": 0.8555632082870034,
+          "bbox": [
+            398.4,
+            87.11999999999999,
+            600.9599999999999,
+            115.44
+          ]
+        },
+        {
+          "technique": "noise",
+          "severity": "medium",
+          "score": 0.011764705882352941,
+          "bbox": [
+            153.6,
+            1720.32,
+            337.91999999999996,
+            1751.04
+          ]
+        }
+      ]
+    }
+  ]
+}

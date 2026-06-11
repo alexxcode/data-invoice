@@ -4,6 +4,7 @@ import fitz
 from typing import List, Tuple
 from .models import ForensicFinding, ForensicReport, Severity, DocumentClass
 from .classifier import classify_document
+from .geometry import compute_iou
 from .metadata import analyze_metadata
 from .typography import analyze_typography
 from .ela import analyze_ela
@@ -16,18 +17,6 @@ def get_config():
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
     with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
-def compute_iou(boxA, boxB):
-    if not boxA or not boxB: return 0.0
-    xA = max(boxA[0], boxB[0])
-    yA = max(boxA[1], boxB[1])
-    xB = min(boxA[2], boxB[2])
-    yB = min(boxA[3], boxB[3])
-    interArea = max(0, xB - xA) * max(0, yB - yA)
-    if interArea == 0: return 0.0
-    boxAArea = (boxA[2] - boxA[0]) * (boxA[3] - boxA[1])
-    boxBArea = (boxB[2] - boxB[0]) * (boxB[3] - boxB[1])
-    return interArea / float(boxAArea + boxBArea - interArea)
 
 def score_findings(findings: List[ForensicFinding], doc_class: DocumentClass) -> Tuple[float, bool, List[ForensicFinding]]:
     config = get_config()

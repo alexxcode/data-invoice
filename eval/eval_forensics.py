@@ -1,8 +1,18 @@
+"""[LEGADO — Fase 0] Scoring a nivel página sobre data/tampered_eval.
+
+Superseded por eval/eval_huggingface.py, que añade localización IoU contra
+máscaras GT, split calibración/test y semillas fijas. Se conserva solo como
+referencia histórica; no usar sus números en el README.
+"""
 import os
 import json
+import sys
+
 import fitz
 import numpy as np
 from PIL import Image
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.forensics.models import DocumentClass
 from app.forensics.classifier import classify_document

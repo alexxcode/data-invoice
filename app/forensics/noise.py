@@ -6,6 +6,9 @@ import numpy as np
 from skimage.restoration import denoise_wavelet
 from typing import List
 from .models import ForensicFinding, Severity, DocumentClass
+from .geometry import pixels_to_points
+
+RENDER_DPI = 150
 
 def get_config():
     config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
@@ -34,7 +37,7 @@ def analyze_noise(doc: fitz.Document, doc_class: DocumentClass) -> List[Forensic
     
     for page_idx, page in enumerate(doc):
         try:
-            pix = page.get_pixmap(dpi=150)
+            pix = page.get_pixmap(dpi=RENDER_DPI)
             img = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.h, pix.w, pix.n)
             if pix.n >= 3:
                 gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -68,17 +71,32 @@ def analyze_noise(doc: fitz.Document, doc_class: DocumentClass) -> List[Forensic
             num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(final_mask, connectivity=8)
             total_blocks = h_b * w_b
             
+            # Mayor componente que supere el umbral de área -> un finding por página
+            best = None
             for i in range(1, num_labels):
                 area = stats[i, cv2.CC_STAT_AREA]
-                if area / total_blocks > area_thresh:
-                    findings.append(ForensicFinding(
-                        technique="noise",
-                        severity=Severity.MEDIUM,
-                        page=page_idx,
-                        score=min(1.0, area / (total_blocks * 0.1)),
-                        explanation="Inconsistencia de ruido local (wavelet residual). Posible parcheado."
-                    ))
-                    break
+                if area / total_blocks > area_thresh and (best is None or area > stats[best, cv2.CC_STAT_AREA]):
+                    best = i
+
+            if best is not None:
+                area = stats[best, cv2.CC_STAT_AREA]
+                # bbox: bloques -> píxeles del render -> puntos PDF (espacio canónico)
+                bx = stats[best, cv2.CC_STAT_LEFT]
+                by = stats[best, cv2.CC_STAT_TOP]
+                bw = stats[best, cv2.CC_STAT_WIDTH]
+                bh = stats[best, cv2.CC_STAT_HEIGHT]
+                bbox_px = (bx * block_size, by * block_size,
+                           (bx + bw) * block_size, (by + bh) * block_size)
+                bbox = pixels_to_points(bbox_px, RENDER_DPI)
+
+                findings.append(ForensicFinding(
+                    technique="noise",
+                    severity=Severity.MEDIUM,
+                    page=page_idx,
+                    bbox=bbox,
+                    score=min(1.0, area / (total_blocks * 0.1)),
+                    explanation="Inconsistencia de ruido local (wavelet residual). Posible parcheado."
+                ))
         except Exception as e:
             print(f"Error processing Noise analysis: {e}")
 
