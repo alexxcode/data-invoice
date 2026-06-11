@@ -4,7 +4,8 @@
 > investigación, los pilares del trabajo, el moat comercial y las fases de ejecución con
 > criterios de aceptación. Se actualiza al cierre de cada fase con resultados reales.
 >
-> Fecha de creación: 2026-06-11. Estado: **Fase 0 completada (2026-06-11). Siguiente: Fase 1 (benchmark realista).**
+> Fecha de creación: 2026-06-11. Estado: **Fases 0 y 1 completadas (2026-06-11).
+> Siguiente: Fase 2 (baselines aprendidos — prioridad elevada, ver §5).**
 
 ---
 
@@ -151,10 +152,18 @@ Miles de muestras con máscaras. Datasheet. Publicación en HF Hub.
 *Aceptación:* dataset publicado; distribución de ataques auditada manualmente (muestreo de 50);
 ningún ataque "indetectable por principio" (parche invisible) en el set.
 
-### Fase 2 — Baselines (1 semana)
-TruFor/CAT-Net en inferencia + VLM-judge + stack clásico sobre el benchmark.
-*Aceptación:* tabla maestra detector × ataque × cadena con APCER/BPCER/AUC/IoU, calib/test
-separados.
+### Fase 2 — Baselines aprendidos (1 semana) — PRIORIDAD ELEVADA tras Fase 1
+El stack clásico no localiza nada (Fase 1, §5); sin un detector que localice no hay
+contribución de localización que fusionar. Por eso esta fase deja de ser comparación
+"nice-to-have" y pasa a ser la pieza que decide si el proyecto tiene un resultado positivo.
+- **TruFor y/o CAT-Net en inferencia** (pesos preentrenados, sin entrenar nada) sobre el
+  benchmark v1. Producen un mapa de manipulación → bbox por umbral → misma métrica IoU.
+- **VLM-as-judge** (Gemini: "¿manipulada? ¿dónde?") como tercer punto de comparación.
+*Aceptación:* tabla maestra detector × ataque × cadena con APCER página/localizado y BPCER,
+calib/test separados. Decisión explícita: ¿hay AL MENOS un detector con APCER localizado
+< 50% en alguna celda? Si sí, hay localización que vale la pena fusionar; si no, el proyecto
+pivota a "auditoría a nivel documento con garantías" y la localización se declara problema
+abierto (resultado honesto igualmente publicable).
 
 ### Fase 3 — Fusión calibrada + ruteo conformal (1 semana)
 Combinador calibrado (logística + isotónica), curvas riesgo-cobertura, garantía conformal sobre
@@ -208,6 +217,79 @@ scoring con localización IoU≥0.2 contra máscara GT). Crudos en `data/eval_ca
 recomprimidas es "sin evidencia de capacidad de detección localizada". Punto de partida
 limpio para la tesis (powerUp.md §2): los detectores individuales fallan; el valor habrá
 que construirlo en la fusión calibrada y demostrarlo sobre ataques realistas.
+
+### Fase 1 — Benchmark realista v1 + baseline del stack clásico (ejecutado 2026-06-11)
+
+**Benchmark generado** (`data/benchmark_v1`, manifest de 960 muestras):
+41 documentos reales × {5 ataques realistas + limpio} × {none, recompress, whatsapp,
+print_scan}. Ataques guiados por OCR sobre contenido real (no bloques aleatorios), con
+máscara GT exacta. Scripts: `eval/realistic_injector.py`, `eval/transmission.py`,
+`eval/build_benchmark.py`, `eval/eval_benchmark.py`. Hallazgos crudos cacheados en
+`findings_all.jsonl` (los reutiliza la Fase 3).
+
+**Resultado del stack clásico — split test** (APCER: % de ataques NO detectados; menor mejor):
+
+APCER **localizado** (IoU≥0.2 contra la máscara) — *el módulo señala la región real*:
+
+| ataque (módulo objetivo) | none | recompress | whatsapp | print_scan |
+|---|---|---|---|---|
+| copy_move_region (copy_move) | 100 | 100 | 100 | 100 |
+| digit_copy (copy_move) | 100 | 100 | 100 | 100 |
+| digit_render (typography) | 100 | 100 | 100 | 100 |
+| inpaint_erase (ela_noise) | 100 | 100 | 100 | 100 |
+| splice_foreign (ela_noise) | 100 | 100 | 100 | 100 |
+
+APCER **a nivel página** — *el módulo dispara en algún lugar de la página*:
+
+| ataque | none | recompress | whatsapp | print_scan |
+|---|---|---|---|---|
+| copy_move_region | 100 | 100 | 100 | 100 |
+| digit_copy | 100 | 100 | 100 | 100 |
+| digit_render | 30 | 30 | 35 | 20 |
+| inpaint_erase | 30 | 30 | 100 | 40 |
+| splice_foreign | 30 | 30 | 95 | 30 |
+
+BPCER (falsas alarmas en limpios, % — menor mejor):
+
+| módulo | none | recompress | whatsapp | print_scan |
+|---|---|---|---|---|
+| typography | 70 | 75 | 55 | 75 |
+| ela_noise | 70 | 70 | 0 | 75 |
+| copy_move | 0 | 0 | 0 | 0 |
+
+(Split calib consistente: localizado 100% en todo; mismas tendencias de página y BPCER.)
+
+**Lectura — los tres hechos honestos:**
+1. **Localización ≈ 0 en todo el espacio.** Ningún módulo señala la región manipulada de
+   ningún ataque bajo ninguna cadena (APCER localizado = 100% uniforme). La capa forense
+   clásica no localiza fraude en facturas reales.
+2. **Las "detecciones" de página son indistinguibles de ruido.** typography y ela_noise
+   disparan en ~70% de las páginas manipuladas (APCER página ~30%) pero también en
+   55-80% de las limpias (BPCER). Es decir: cuando aciertan la página es casi por la misma
+   tasa con que se equivocan en una limpia, y nunca sobre la región correcta. No hay señal
+   utilizable, hay una moneda sesgada.
+3. **La transmisión rompe los detectores de dos formas opuestas.** WhatsApp (downscale+q70)
+   apaga ela_noise (BPCER 0% pero APCER página salta a 95-100%: silencio total); las demás
+   cadenas lo dejan disparando en todas partes. copy_move con coherencia ±2px es silencio
+   absoluto en todo el grid (0 detección / 0 FP): la recompresión JPEG destruye la
+   coherencia rígida de keypoints.
+
+**Caveat metodológico:** las máscaras de digit_copy/digit_render son pequeñas (un dígito),
+lo que endurece IoU≥0.2; pero el APCER de página y el BPCER (independientes de la máscara)
+confirman la conclusión sin depender del umbral de localización.
+
+**Implicación para Fases 2-3:** la fusión de estas señales NO puede recuperar localización
+(no hay localización que fusionar). Dos consecuencias que redirigen el plan:
+- **Pilar B (baselines aprendidos) sube de prioridad:** sin un detector que localice (TruFor/
+  CAT-Net en inferencia, o VLM-as-judge), la contribución de localización no existe. Es la
+  próxima pieza crítica, no opcional.
+- **Pilar C (fusión + conformal) se reencuadra a nivel documento:** el valor demostrable del
+  stack clásico, si lo hay, es como señal débil de "derivar a humano" a nivel página, no como
+  localizador. La garantía conformal se medirá sobre la decisión de ruteo, no sobre el píxel.
+
+Este es el **Resultado 1** de la tesis (powerUp.md §2), ahora medido sobre ataques realistas
+y cadenas de transmisión, no insinuado: *ningún detector forense clásico individual sobrevive
+a las condiciones reales de transmisión de facturas.*
 
 ### Decisiones tomadas durante la ejecución
 

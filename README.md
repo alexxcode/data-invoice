@@ -65,41 +65,51 @@ Cotejo incluye una capa concurrente de análisis forense que no emite REJECT aut
 2. **Archivos Nativos**: ELA y noise no aplican a PDFs nativos; en ese dominio la cobertura recae en metadata y typography.
 3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
 
-### Métricas Forenses (baseline honesto, Fase 0 de powerUp.md)
+### Métricas Forenses — benchmark realista v1 (Fase 1 de powerUp.md)
 
-> **Nota de retractación metodológica (2026-06-11):** las métricas forenses publicadas
-> anteriormente en este README quedan retiradas. El scoring contaba como detección cualquier
-> alerta en la página (sin verificar que señalara la región manipulada), no había split de
-> calibración/test, y los umbrales se habían ajustado sobre el mismo set reportado. El detalle
-> completo del diagnóstico y el plan de corrección están en [powerUp.md](powerUp.md).
+> **Nota de retractación metodológica (2026-06-11):** las métricas forenses que este README
+> publicaba antes quedan retiradas. Contaban como detección cualquier alerta en la página (sin
+> verificar que señalara la región manipulada), sin split calib/test, con umbrales ajustados
+> sobre el mismo set reportado. Diagnóstico y plan completos en [powerUp.md](powerUp.md).
 
-La evaluación actual usa documentos reales (`mychen76/invoices-and-receipts_ocr_v1`, HuggingFace)
-con manipulaciones sintéticas inyectadas, y exige **localización**: un ataque solo cuenta como
-detectado si algún hallazgo del módulo solapa la región manipulada (IoU ≥ 0.2 contra la máscara
-ground-truth). Umbrales congelados a los valores de especificación; split test reportado.
+El **benchmark v1** somete 41 facturas reales (`mychen76/invoices-and-receipts_ocr_v1`) a un
+grid de **5 ataques realistas guiados por OCR** (copia de dígito font-matched, reescritura con
+fuente externa, borrado por inpainting, splice de otro documento, clonado de región) × **4
+cadenas de transmisión** (original, recompresión, WhatsApp, print-scan). Cada ataque cae sobre
+contenido real con una máscara ground-truth exacta. Un ataque cuenta como **localizado** solo si
+el módulo objetivo emite un hallazgo con IoU ≥ 0.2 contra esa máscara. Split test (n=480):
 
-| Módulo | APCER página | APCER localizado (IoU≥0.2) | BPCER | n (pos/neg) |
+**APCER localizado** (% de ataques cuya región NO es señalada — menor es mejor):
+
+| ataque | original | recompresión | whatsapp | print-scan |
 |---|---|---|---|---|
-| **Typography** | 25% | **100%** | **70%** | 20/20 |
-| **ELA & Noise** | 30% | **100%** | **70%** | 20/20 |
-| **Copy-Move** | **100%** | 100% | 0% | 20/20 |
+| todos los ataques | **100** | **100** | **100** | **100** |
 
-*Lectura honesta:* **ningún módulo localiza ninguna manipulación**. Las "detecciones" a nivel
-página de typography y ELA/noise coexisten con tasas de falsa alarma del 60-80% en documentos
-limpios: son indistinguibles de ruido que cae por azar en una página manipulada. Parte del
-resultado refleja también que los ataques sintéticos actuales son inválidos como medida de
-capacidad (bloques aleatorios en posiciones aleatorias). La construcción de un benchmark de
-ataques realistas con cadenas de transmisión (recompresión, WhatsApp, print-scan) es la Fase 1
-de [powerUp.md](powerUp.md).
+**APCER a nivel página** (% que ni siquiera dispara una alerta en la página) y **BPCER**
+(falsas alarmas en documentos limpios):
 
-Para reproducir este resultado offline (los artefactos de imagen no se versionan por tamaño;
-si no existen localmente, el modo streaming los regenera con semillas fijas usando
-`--batch_size 41 --regenerate`):
+| módulo | APCER pág. (rango) | BPCER (rango) |
+|---|---|---|
+| typography | 20–35% | 55–75% |
+| ela_noise | 30–100% | 0–75% |
+| copy_move | 100% (silencio total) | 0% |
+
+*Lectura honesta:* **la capa forense clásica no localiza fraude en facturas reales** (APCER
+localizado = 100% en todo el grid). Las alertas de página de typography/ela_noise disparan en
+~70% de documentos manipulados pero también en 55–75% de los limpios: son indistinguibles de
+ruido, no señal. La transmisión rompe los detectores de dos formas opuestas — WhatsApp apaga
+ela_noise por completo (silencio), las demás cadenas lo dejan disparando en todas partes — y
+copy_move con coherencia ±2px no detecta nada tras la recompresión JPEG. Este es el resultado
+de partida del proyecto: los detectores individuales no bastan; el trabajo es construir, sobre
+baselines aprendidos y fusión calibrada, una decisión de auditoría con garantías (Fases 2–3 de
+[powerUp.md](powerUp.md)).
+
+Reproducir (los ~960 artefactos de imagen no se versionan por tamaño; se regeneran con semillas
+fijas):
 ```bash
-python eval/eval_huggingface.py --local_dir data/hf_eval --split test
+python eval/build_benchmark.py --base_dir data/hf_eval --out_dir data/benchmark_v1
+python eval/eval_benchmark.py  --bench_dir data/benchmark_v1 --split test
 ```
-Los resultados crudos de la corrida citada están versionados en `data/eval_calib.json` y
-`data/eval_test.json`.
 
 ---
 

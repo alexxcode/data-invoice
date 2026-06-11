@@ -1,0 +1,226 @@
+{
+  "copy_move|digit_copy|none": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|digit_copy|recompress": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|digit_copy|whatsapp": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|digit_copy|print_scan": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "typography|digit_render|none": {
+    "pos": 20,
+    "page": 12,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "typography|digit_render|recompress": {
+    "pos": 20,
+    "page": 12,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "typography|digit_render|whatsapp": {
+    "pos": 20,
+    "page": 11,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "typography|digit_render|print_scan": {
+    "pos": 20,
+    "page": 12,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|inpaint_erase|none": {
+    "pos": 20,
+    "page": 16,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|inpaint_erase|recompress": {
+    "pos": 20,
+    "page": 16,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|inpaint_erase|whatsapp": {
+    "pos": 20,
+    "page": 1,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|inpaint_erase|print_scan": {
+    "pos": 20,
+    "page": 15,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|splice_foreign|none": {
+    "pos": 20,
+    "page": 16,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|splice_foreign|recompress": {
+    "pos": 20,
+    "page": 16,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|splice_foreign|whatsapp": {
+    "pos": 20,
+    "page": 1,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "ela_noise|splice_foreign|print_scan": {
+    "pos": 20,
+    "page": 16,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|copy_move_region|none": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|copy_move_region|recompress": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|copy_move_region|whatsapp": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move|copy_move_region|print_scan": {
+    "pos": 20,
+    "page": 0,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "typography|clean|none": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 12
+  },
+  "ela_noise|clean|none": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 16
+  },
+  "copy_move|clean|none": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 0
+  },
+  "typography|clean|recompress": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 12
+  },
+  "ela_noise|clean|recompress": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 16
+  },
+  "copy_move|clean|recompress": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 0
+  },
+  "typography|clean|whatsapp": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 11
+  },
+  "ela_noise|clean|whatsapp": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 1
+  },
+  "copy_move|clean|whatsapp": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 0
+  },
+  "typography|clean|print_scan": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 12
+  },
+  "ela_noise|clean|print_scan": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 7
+  },
+  "copy_move|clean|print_scan": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 20,
+    "fp": 0
+  }
+}
