@@ -327,3 +327,85 @@
 {"image": "images\\doc27_clean_recompress.jpg", "tampered": true, "regions": [[0.5319, 0.8982, 0.5417, 0.9109], [0.7013, 0.8982, 0.711, 0.9109], [0.8464, 0.8982, 0.8561, 0.9109]], "error": null}
 {"image": "images\\doc27_clean_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
 {"image": "images\\doc27_clean_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_digit_copy_none.jpg", "tampered": true, "regions": [[0.7134, 0.4259, 0.7739, 0.4363]], "error": null}
+{"image": "images\\doc29_digit_copy_recompress.jpg", "tampered": true, "regions": [[0.7073, 0.4277, 0.7678, 0.4405]], "error": null}
+{"image": "images\\doc29_digit_copy_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_digit_copy_print_scan.jpg", "tampered": true, "regions": [[0.58, 0.5, 0.629, 0.513]], "error": null}
+{"image": "images\\doc29_digit_render_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_digit_render_whatsapp.jpg", "tampered": true, "regions": [[0.8948, 0.4705, 0.9673, 0.4833]], "error": null}
+{"image": "images\\doc29_digit_render_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_inpaint_erase_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_inpaint_erase_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_splice_foreign_none.jpg", "tampered": true, "regions": [[0.0967, 0.077, 0.3386, 0.0898]], "error": null}
+{"image": "images\\doc29_splice_foreign_recompress.jpg", "tampered": true, "regions": [[0.484, 0.089, 0.581, 0.107]], "error": null}
+{"image": "images\\doc29_splice_foreign_whatsapp.jpg", "tampered": true, "regions": [[0.581, 0.056, 0.654, 0.068]], "error": null}
+{"image": "images\\doc29_splice_foreign_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_copy_move_region_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_copy_move_region_recompress.jpg", "tampered": true, "regions": [[0.8924, 0.4611, 0.9674, 0.4748]], "error": null}
+{"image": "images\\doc29_copy_move_region_whatsapp.jpg", "tampered": true, "regions": [[0.8706, 0.4662, 0.9432, 0.479]], "error": null}
+{"image": "images\\doc29_copy_move_region_print_scan.jpg", "tampered": true, "regions": [[0.8343, 0.4658, 0.9069, 0.4786]], "error": null}
+{"image": "images\\doc29_clean_none.jpg", "tampered": true, "regions": [[0.7458, 0.3468, 0.8041, 0.3593]], "error": null}
+{"image": "images\\doc29_clean_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_clean_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc29_clean_print_scan.jpg", "tampered": true, "regions": [[0.8706, 0.4688, 0.9432, 0.4833]], "error": null}
+{"image": "images\\doc31_digit_copy_none.jpg", "tampered": true, "regions": [[0.477, 0.624, 0.505, 0.635]], "error": null}
+{"image": "images\\doc31_digit_copy_recompress.jpg", "tampered": true, "regions": [[0.4716, 0.6228, 0.5175, 0.6364]], "error": null}
+{"image": "images\\doc31_digit_copy_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_digit_copy_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_digit_render_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_digit_render_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_digit_render_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_digit_render_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_inpaint_erase_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_inpaint_erase_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_inpaint_erase_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_splice_foreign_none.jpg", "tampered": true, "regions": [[0.856, 0.42, 0.897, 0.431]], "error": null}
+{"image": "images\\doc31_splice_foreign_recompress.jpg", "tampered": true, "regions": [[0.95, 0.5, 0.987, 0.513]], "error": null}
+{"image": "images\\doc31_splice_foreign_whatsapp.jpg", "tampered": true, "regions": [[0.952, 0.504, 0.985, 0.517]], "error": null}
+{"image": "images\\doc31_splice_foreign_print_scan.jpg", "tampered": true, "regions": [[0.786, 0.606, 0.846, 0.62]], "error": null}
+{"image": "images\\doc31_copy_move_region_none.jpg", "tampered": true, "regions": [[0.6046, 0.3935, 0.6651, 0.4063]], "error": null}
+{"image": "images\\doc31_copy_move_region_recompress.jpg", "tampered": true, "regions": [[0.39516, 0.273, 0.42742, 0.28164]], "error": null}
+{"image": "images\\doc31_copy_move_region_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_copy_move_region_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc31_clean_recompress.jpg", "tampered": true, "regions": [[0.538, 0.731, 0.562, 0.742], [0.689, 0.731, 0.713, 0.742], [0.834, 0.731, 0.858, 0.742]], "error": null}
+{"image": "images\\doc31_clean_print_scan.jpg", "tampered": true, "regions": [[0.5, 0.77, 0.938, 0.81]], "error": null}
+{"image": "images\\doc33_digit_copy_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_digit_copy_recompress.jpg", "tampered": true, "regions": [[0.121, 0.355, 0.484, 0.368]], "error": null}
+{"image": "images\\doc33_digit_copy_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_digit_copy_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_digit_render_none.jpg", "tampered": true, "regions": [[0.403, 0.396, 0.44, 0.411]], "error": null}
+{"image": "images\\doc33_digit_render_recompress.jpg", "tampered": true, "regions": [[0.69007, 0.3379, 0.78692, 0.35499]], "error": null}
+{"image": "images\\doc33_digit_render_whatsapp.jpg", "tampered": true, "regions": [[0.459, 0.321, 0.508, 0.334]], "error": null}
+{"image": "images\\doc33_digit_render_print_scan.jpg", "tampered": true, "regions": [[0.3145, 0.2223, 0.3548, 0.2309], [0.2419, 0.2366, 0.2661, 0.2451]], "error": null}
+{"image": "images\\doc33_inpaint_erase_none.jpg", "tampered": true, "regions": [[0.87, 0.279, 0.88, 0.29]], "error": null}
+{"image": "images\\doc33_inpaint_erase_recompress.jpg", "tampered": true, "regions": [[0.9079, 0.3379, 0.9685, 0.3549]], "error": null}
+{"image": "images\\doc33_inpaint_erase_whatsapp.jpg", "tampered": true, "regions": [[0.879, 0.39, 0.895, 0.407]], "error": null}
+{"image": "images\\doc33_inpaint_erase_print_scan.jpg", "tampered": true, "regions": [[0.8837, 0.3983, 0.8959, 0.411]], "error": null}
+{"image": "images\\doc33_splice_foreign_none.jpg", "tampered": true, "regions": [[0.151, 0.252, 0.459, 0.269]], "error": null}
+{"image": "images\\doc33_splice_foreign_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_splice_foreign_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_splice_foreign_print_scan.jpg", "tampered": true, "regions": [[0.169, 0.255, 0.466, 0.265]], "error": null}
+{"image": "images\\doc33_copy_move_region_none.jpg", "tampered": true, "regions": [[0.59008, 0.46108, 0.61064, 0.47562], [0.74728, 0.46108, 0.76783, 0.47562], [0.90447, 0.46108, 0.92503, 0.47562]], "error": null}
+{"image": "images\\doc33_copy_move_region_recompress.jpg", "tampered": true, "regions": [[0.121, 0.352, 0.484, 0.364]], "error": null}
+{"image": "images\\doc33_copy_move_region_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_copy_move_region_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_clean_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_clean_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc33_clean_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_digit_copy_none.jpg", "tampered": true, "regions": [[0.2297, 0.6655, 0.9915, 0.6826]], "error": null}
+{"image": "images\\doc35_digit_copy_whatsapp.jpg", "tampered": true, "regions": [[0.2, 0.78, 0.9, 0.8], [0.39, 0.75, 0.43, 0.76]], "error": null}
+{"image": "images\\doc35_digit_copy_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_digit_render_none.jpg", "tampered": true, "regions": [[0.411, 0.501, 0.431, 0.513], [0.568, 0.299, 0.589, 0.308]], "error": null}
+{"image": "images\\doc35_digit_render_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_digit_render_whatsapp.jpg", "tampered": true, "regions": [[0.6046, 0.4106, 0.7255, 0.4234], [0.7255, 0.4534, 0.8464, 0.4662], [0.4716, 0.4962, 0.5199, 0.509], [0.6046, 0.5389, 0.7255, 0.5518]], "error": null}
+{"image": "images\\doc35_digit_render_print_scan.jpg", "tampered": true, "regions": [[0.393, 0.62, 0.429, 0.637]], "error": null}
+{"image": "images\\doc35_inpaint_erase_none.jpg", "tampered": true, "regions": [[0.65296, 0.34388, 0.72551, 0.35671]], "error": null}
+{"image": "images\\doc35_inpaint_erase_recompress.jpg", "tampered": true, "regions": [[0.652962515114873, 0.40632999144568, 0.7255139056831923, 0.4191616766467066]], "error": null}
+{"image": "images\\doc35_inpaint_erase_whatsapp.jpg", "tampered": true, "regions": [[0.665, 0.338, 0.738, 0.351]], "error": null}
+{"image": "images\\doc35_splice_foreign_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_splice_foreign_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_splice_foreign_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_splice_foreign_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc35_copy_move_region_none.jpg", "tampered": true, "regions": [[0.652, 0.748, 0.749, 0.761]], "error": null}

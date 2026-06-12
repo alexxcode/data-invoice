@@ -343,9 +343,18 @@ el 100% del test — los números se firman al cerrar el barrido):
   muestras de calibración (se necesitan ~60-100 docs de fraude en calib para certificar ≤5%;
   un test lo fija como invariante). Se relaja al completar el barrido + añadir el split calib.
 
-**Pendiente para firmar Fase 3:** (1) terminar barrido VLM en test (en curso); (2) correr VLM
-en el split calib (otras ~480 llamadas Vertex) para usar el split limpio calib/test del
-benchmark en vez del interno; (3) re-correr y publicar la curva final en README.
+**Cierre de Fase 3 (congelado 2026-06-12, n=411 = 86% del split test, split interno por doc):**
+- **AUC:** clásico **0.48** (ruido, ~0.5) · VLM **0.70** · **fusión 0.73**. La fusión supera a
+  cualquier señal sola de forma consistente en todas las corridas conforme creció n.
+- **Ruteo conformal** (α=5% escape, δ=10%): certifica ~10% del volumen con 0.6% de escape real
+  (99.4% recall de fraude en la porción certificada). Proyectado a prevalencia 2%: 10%
+  automatización, 0.12% fuga.
+- **Curva riesgo-cobertura @ prevalencia 2%:** 53%→1.0% fuga (74% fraude capturado);
+  66%→1.1% (65%); 79%→1.1% (55%); 89%→1.2% (45%).
+- Números publicados en README. **Decisión:** se congela aquí (el usuario optó por no esperar el
+  barrido completo ni el split calib; el patrón es estable). Mejora pendiente para una v2:
+  completar VLM al 100% + split calib limpio + más datos de calibración para certificar mayor
+  cobertura conformal.
 
 ### O1 (extracción vs IDSEM) — investigación de viabilidad (2026-06-12)
 

@@ -27,12 +27,12 @@ Evaluado sobre un benchmark propio de manipulaciones realistas × canales de tra
 | Hallazgo | Evidencia |
 |---|---|
 | **El forense clásico no localiza fraude en facturas reales** | APCER localizado = **100%** en todo ataque × canal; falsas alarmas 55–75% (ELA/ruido/tipografía) — indistinguible de ruido. |
-| **Un VLM de propósito general no localiza, pero detecta a nivel documento con muy bajo FP** | BPCER **0–10%** (vs 55–75% del clásico); AUC ≈ **0.72**. |
-| **La fusión calibrada supera a cualquier señal sola** | AUC: clásico **0.51** · VLM **0.72** · **fusión 0.77**. Las señales clásicas, inútiles por separado, suman al calibrarse. |
-| **El ruteo conformal automatiza con fuga acotada y demostrable** | A prevalencia real (2%): **~77% de automatización con ~0.9% de fuga** de fraude; o cobertura certificada con garantía ≤5% de escape al 90% de confianza. |
+| **Un VLM de propósito general no localiza, pero detecta a nivel documento con muy bajo FP** | BPCER **6–18%** (vs 55–75% del clásico); AUC ≈ **0.70**. |
+| **La fusión calibrada supera a cualquier señal sola** | AUC: clásico ≈ **0.5** (ruido) · VLM **0.70** · **fusión 0.73**. Las señales clásicas, inútiles por separado, suman al calibrarse. |
+| **El ruteo conformal automatiza con fuga acotada y demostrable** | A prevalencia real (2%): **~66–79% de automatización con ~1.1% de fuga** de fraude; o cobertura certificada con garantía ≤5% de escape al 90% de confianza. |
 
-*(Números del split test, n≈180; reproducibles con `python reproduce.py --skip-vlm`. El registro
-completo por fase está en [powerUp.md](powerUp.md).)*
+*(Números del split test, n≈195 (~86% del benchmark); reproducibles con
+`python reproduce.py --skip-vlm`. El registro completo por fase está en [powerUp.md](powerUp.md).)*
 
 ---
 
@@ -143,8 +143,9 @@ WhatsApp apaga ELA/ruido por completo, las demás cadenas lo dejan disparando en
 
 Gemini como perito forense (`eval/vlm_judge.py`) tampoco localiza el píxel (razona sobre la
 incoherencia visible/aritmética, no sobre la textura), pero a nivel documento es un detector
-**útil y de bajo falso positivo**: BPCER 0–10% frente al 55–75% del stack clásico, capturando
-mejor el vector de fraude más probable (reescritura de importe). AUC ≈ 0.72.
+**útil y de bajo falso positivo**: BPCER 6–18% frente al 55–75% del stack clásico, capturando
+mejor el vector de fraude más probable (reescritura de importe — APCER de página 17–29%).
+AUC ≈ 0.70.
 
 ### 5.3 Fusión calibrada + ruteo conformal — el resultado
 
@@ -153,9 +154,9 @@ Una regresión logística calibrada combina las señales clásicas (débiles) co
 
 | modelo | AUC (test) |
 |---|---|
-| clásico solo | 0.51 (ruido) |
-| VLM solo | 0.72 |
-| **fusión clásico+VLM** | **0.77** |
+| clásico solo | ≈0.5 (ruido) |
+| VLM solo | 0.70 |
+| **fusión clásico+VLM** | **0.73** |
 
 La fusión supera a cualquier señal sola: las señales clásicas, inservibles por separado,
 **aportan al calibrarse**.
@@ -167,14 +168,14 @@ prevalencia** y transfiere a cualquier despliegue. Reproyectada a prevalencia re
 
 | automatización | fuga en auto-approve | fraude capturado |
 |---|---|---|
-| 62% | 0.8% | 75% |
-| 77% | 0.9% | 65% |
-| 84% | 1.0% | 56% |
+| 53% | 1.0% | 74% |
+| 66% | 1.1% | 65% |
+| 79% | 1.1% | 55% |
 
-**Titular:** automatizar ~3 de cada 4 facturas con <1% de fuga de fraude en lo auto-aprobado, y
-una cota conformal demostrable (≤5% de escape al 90% de confianza) sobre la porción certificada.
-El número exacto de cobertura crece con más datos de calibración (la cota Clopper-Pearson es
-conservadora con calib pequeño — un comportamiento correcto, no un fallo).
+**Titular:** automatizar ~2 de cada 3 facturas con ~1% de fuga de fraude en lo auto-aprobado, y
+una cota conformal demostrable (≤5% de escape al 90% de confianza, certificada sobre ~10% del
+volumen con la calibración actual). La cobertura certificada crece con más datos de calibración
+(la cota Clopper-Pearson es conservadora con calib pequeño — comportamiento correcto, no un fallo).
 
 ---
 
