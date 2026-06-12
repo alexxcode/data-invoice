@@ -1,149 +1,247 @@
-# Cotejo: Motor Dual de Auditoría Documental y Ruteo Heurístico
+# Cotejo — Auditoría forense de facturas con ruteo de decisión garantizado
 
-Cotejo es un sistema de extracción y validación de facturas diseñado bajo una premisa central: **los Modelos de Lenguaje (LLMs) alucinan**. 
+Cotejo es un sistema de auditoría de facturas que combina extracción multimodal, reglas
+deterministas y análisis forense, y los fusiona en una **decisión de ruteo a nivel documento con
+una garantía estadística sobre la fuga de fraude**. Más que "leer una factura", responde la
+pregunta operativa: *¿qué fracción del volumen puedo automatizar sin que se cuele fraude, y con
+qué cobertura demostrable?*
 
-En lugar de confiar el proceso completo a una IA generativa, el sistema aísla el proceso de lectura (delegado al LLM) del proceso de validación final (delegado a un código determinista tradicional). Esto permite rutar los documentos de forma segura sin depender de que un LLM tome la decisión de rechazo.
+El proyecto es también un estudio empírico honesto: documenta **qué detectores de manipulación
+NO funcionan** sobre facturas reales transmitidas por canales del mundo real (recompresión,
+WhatsApp, print-scan), y muestra cómo recuperar valor combinando señales débiles bajo una cota
+conformal.
 
-> **Documentos clave:** [THREAT_MODEL.md](THREAT_MODEL.md) define contra qué adversario y bajo
-> qué canal de transmisión se mide la detección (sin esto las métricas no son interpretables).
-> [powerUp.md](powerUp.md) es el plan de investigación y el registro de resultados por fase.
-> El pipeline experimental completo se reproduce con `python reproduce.py --skip-vlm`.
-
----
-
-## 1. Arquitectura del Sistema
-
-El pipeline de procesamiento se divide en tres capas con responsabilidades estrictamente separadas:
-
-### Fase 1: Extracción Visual (VLM)
-Convierte documentos PDF en mapas de bits (imágenes a 150 DPI) usando `PyMuPDF`. Estas imágenes se envían a Gemini 2.5 Flash operando a Temperatura 0.0 para forzar la máxima predictibilidad en la estructura JSON devuelta.
-*   **Confidence Score:** El modelo de lenguaje emite un valor numérico estimado libremente por él mismo (0.0 a 1.0) sobre la legibilidad visual del documento. No es un valor estadísticamente calibrado.
-
-### Fase 2: Motor Determinista (Matemático)
-Script en Python puro (`app/rules.py`) que audita los datos que el LLM extrajo en la Fase 1.
-*   **Regla principal:** Verifica que `Subtotal + Impuestos = Total Declarado`.
-*   **Identificadores:** Revisa si existen las cadenas de texto del CIF y el CUPS.
-*   **Autoridad:** Es el **único** componente del sistema autorizado para emitir un fallo de Rechazo (`REJECT`). Como el código no alucina, garantiza que no habrá Falsos Positivos causados por un error lógico de la máquina.
-
-### Fase 3: Análisis Semántico Contextual
-Se ejecuta un segundo prompt al LLM buscando inconsistencias en la lógica de negocio (ej. IVA del 50%, tarifas incongruentes).
-*   **Limitación de Autoridad:** Como las inferencias del LLM en texto son ruidosas y propensas a Falsos Positivos, cualquier hallazgo en esta capa solo emite una advertencia (`Warning`). **Jamás** causa un rechazo automático; solo fuerza una revisión manual.
+> **Premisa de diseño:** los LLMs alucinan y todo detector forense tiene falsos positivos no
+> nulos. Por eso la autoridad de **rechazo** es exclusiva del motor determinista; las capas
+> probabilísticas (forense, VLM) solo **derivan a revisión humana**. Una detección fallida nunca
+> produce un pago indebido automático salvo a través del ruteo de auto-aprobación, cuyo riesgo
+> está acotado por la garantía conformal.
 
 ---
 
-## 2. Políticas de Ruteo
+## Resultados en una mirada
 
-El Orquestador (`app/agent.py`) decide a dónde enviar la factura usando umbrales fijos sobre el Score de Confianza del LLM y las reglas deterministas:
+Evaluado sobre un benchmark propio de manipulaciones realistas × canales de transmisión
+(960 muestras; ver [datasheet](data/benchmark_v1/DATASHEET.md)), split test:
 
-*   **🟢 AUTO_APPROVE:** `Score > 0.90` y cero errores matemáticos. La factura se procesa sin intervención humana.
-*   **🟡 MANUAL_REVIEW:** `0.60 ≤ Score ≤ 0.90` o si el LLM detectó anomalías semánticas. Un operador humano debe revisar el documento.
-*   **🔴 REJECT:** `Score < 0.60` o fraude matemático (`Subtotal + Impuestos != Total`).
+| Hallazgo | Evidencia |
+|---|---|
+| **El forense clásico no localiza fraude en facturas reales** | APCER localizado = **100%** en todo ataque × canal; falsas alarmas 55–75% (ELA/ruido/tipografía) — indistinguible de ruido. |
+| **Un VLM de propósito general no localiza, pero detecta a nivel documento con muy bajo FP** | BPCER **0–10%** (vs 55–75% del clásico); AUC ≈ **0.72**. |
+| **La fusión calibrada supera a cualquier señal sola** | AUC: clásico **0.51** · VLM **0.72** · **fusión 0.77**. Las señales clásicas, inútiles por separado, suman al calibrarse. |
+| **El ruteo conformal automatiza con fuga acotada y demostrable** | A prevalencia real (2%): **~77% de automatización con ~0.9% de fuga** de fraude; o cobertura certificada con garantía ≤5% de escape al 90% de confianza. |
 
----
-
-## 3. Metodología de Evaluación y Limitaciones (n=84)
-
-Resultados de la muestra ampliada ejecutada contra un inyector de anomalías sintéticas (*Baseline* vs *Ground Truth*):
-
-| Métrica | Motor Determinista (Python) | Motor Contextual (LLM) |
-|---|---|---|
-| **Precisión (Precision)** | 1.00 (100%) | N/A (Solo emite Warnings) |
-| **Recall (Tasa de Captura)** | 1.00 (100%) | No calibrado |
-| **Falsos Positivos (FP)** | 0 | 21 (Ruido del modelo) |
-| **Falsos Negativos (FN)** | 0 | 0 |
-
-> ***Nota sobre las Limitaciones del Sistema en Producción:** Los ceros absolutos en el motor determinista son un artefacto de hacer pruebas sobre PDFs sintéticos (nativos digitales). En el mundo real (al escalar a un dataset de 75,000 facturas escaneadas), los documentos estarán borrosos, arrugados o mal iluminados. Esto causará que el LLM se equivoque al leer los números (ej. confundir un 8 con un 3). Cuando el LLM extrae un número mal, la suma determinista en Python fallará, lo que levantará un **Falso Positivo**. Es decir: en producción, los fallos de lectura del LLM se transformarán invariablemente en alertas matemáticas. El ruteo mitiga esto mandando dichos casos a Revisión Manual.*
+*(Números del split test, n≈180; reproducibles con `python reproduce.py --skip-vlm`. El registro
+completo por fase está en [powerUp.md](powerUp.md).)*
 
 ---
 
-## 4. Capa Forense (Pixel-Level Tamper Detection)
+## 1. El problema y la tesis
 
-Cotejo incluye una capa concurrente de análisis forense que no emite REJECT automático, sino que fuerza la revisión manual (`MANUAL_REVIEW`) apoyada en evidencias visuales (overlays).
+Revisar facturas a mano es lento; la extracción (OCR/parsing) ya es commodity. Lo que sigue
+siendo trabajo humano es el **juicio**: detectar que un total no cuadra, que una factura está
+duplicada, que un monto fue reescrito — y decidir qué se aprueba solo y qué necesita un humano.
 
-- **Metadatos Estructurales**: Detección de actualizaciones incrementales y editores sospechosos (pikepdf/PyMuPDF).
-- **Tipografía**: Inconsistencias calculadas por Mahalanobis (altura, grosor de trazo, densidad) en texto y OCR.
-- **ELA y Ruido**: Error Level Analysis y Wavelet Residual para documentos escaneados.
-- **Copy-Move**: Detección de clonaciones de píxeles vía keypoints AKAZE y DBSCAN.
+Detectar manipulación documental con técnicas forenses clásicas (ELA, copy-move, ruido) es un
+área madura, pero su fragilidad ante recompresión está documentada. Cotejo parte de esa hipótesis
+y la **mide en el dominio de facturas reales**, llegando a una tesis constructiva:
 
-### Limitaciones de la Capa Forense
-1. **Manipulaciones Sintéticas**: Las manipulaciones de evaluación son sintéticas; un falsificador profesional que reimprime y reescanea el documento elimina la mayoría de las trazas de píxel (solo sobreviven typography y señales de contenido).
-2. **Archivos Nativos**: ELA y noise no aplican a PDFs nativos; en ese dominio la cobertura recae en metadata y typography.
-3. **Falsedad de Contenido**: El sistema detecta manipulación del ARCHIVO, no falsedad del CONTENIDO: una factura generada desde cero con datos falsos es forensemente impecable. Ese vector requiere reconciliación multi-documento.
+> Ningún detector forense individual sobrevive a las condiciones reales de transmisión de
+> facturas. Pero la **fusión calibrada de señales débiles e independientes** (píxel + estructura
+> + tipografía + razonamiento VLM + aritmética determinista), con **ruteo selectivo conformal**,
+> permite automatizar una fracción grande del volumen con una **cota estadística demostrable** de
+> fuga de fraude.
 
-### Métricas Forenses — benchmark realista v1 (Fase 1 de powerUp.md)
+---
 
-> **Nota de retractación metodológica (2026-06-11):** las métricas forenses que este README
-> publicaba antes quedan retiradas. Contaban como detección cualquier alerta en la página (sin
-> verificar que señalara la región manipulada), sin split calib/test, con umbrales ajustados
-> sobre el mismo set reportado. Diagnóstico y plan completos en [powerUp.md](powerUp.md).
+## 2. Arquitectura
 
-El **benchmark v1** somete 41 facturas reales (`mychen76/invoices-and-receipts_ocr_v1`) a un
-grid de **5 ataques realistas guiados por OCR** (copia de dígito font-matched, reescritura con
-fuente externa, borrado por inpainting, splice de otro documento, clonado de región) × **4
-cadenas de transmisión** (original, recompresión, WhatsApp, print-scan). Cada ataque cae sobre
-contenido real con una máscara ground-truth exacta. Un ataque cuenta como **localizado** solo si
-el módulo objetivo emite un hallazgo con IoU ≥ 0.2 contra esa máscara. Split test (n=480):
-
-**APCER localizado** (% de ataques cuya región NO es señalada — menor es mejor):
-
-| ataque | original | recompresión | whatsapp | print-scan |
-|---|---|---|---|---|
-| todos los ataques | **100** | **100** | **100** | **100** |
-
-**APCER a nivel página** (% que ni siquiera dispara una alerta en la página) y **BPCER**
-(falsas alarmas en documentos limpios):
-
-| módulo | APCER pág. (rango) | BPCER (rango) |
-|---|---|---|
-| typography | 20–35% | 55–75% |
-| ela_noise | 30–100% | 0–75% |
-| copy_move | 100% (silencio total) | 0% |
-
-*Lectura honesta:* **la capa forense clásica no localiza fraude en facturas reales** (APCER
-localizado = 100% en todo el grid). Las alertas de página de typography/ela_noise disparan en
-~70% de documentos manipulados pero también en 55–75% de los limpios: son indistinguibles de
-ruido, no señal. La transmisión rompe los detectores de dos formas opuestas — WhatsApp apaga
-ela_noise por completo (silencio), las demás cadenas lo dejan disparando en todas partes — y
-copy_move con coherencia ±2px no detecta nada tras la recompresión JPEG. Este es el resultado
-de partida del proyecto: los detectores individuales no bastan; el trabajo es construir, sobre
-baselines aprendidos y fusión calibrada, una decisión de auditoría con garantías (Fases 2–3 de
-[powerUp.md](powerUp.md)).
-
-Reproducir (los ~960 artefactos de imagen no se versionan por tamaño; se regeneran con semillas
-fijas):
-```bash
-python eval/build_benchmark.py --base_dir data/hf_eval --out_dir data/benchmark_v1
-python eval/eval_benchmark.py  --bench_dir data/benchmark_v1 --split test
+```
+[PDF / imagen]
+     │
+     ▼
+(1) Extracción VLM        Gemini (multimodal) → JSON estructurado + provenance {doc, página, campo}
+     │
+     ▼
+(2) Motor determinista    aritmética, duplicados, campos faltantes/ inválidos
+     │                    ÚNICA capa con autoridad de RECHAZO (no alucina)
+     ▼
+(3) Capa forense          metadata + tipografía + ELA + ruido + copy-move (a nivel píxel/archivo)
+     │                    solo DERIVA a revisión, nunca rechaza
+     ▼
+(4) Fusión + ruteo        combina señales → P(manipulado) calibrada → decisión con garantía conformal
+     │
+     ▼
+[Informe auditable: decisión + citas + evidencia visual]
 ```
 
+**Principio de groundedness:** las cifras y citas del informe provienen de la salida
+estructurada verificada y de las herramientas deterministas, no del texto libre del LLM. El LLM
+razona y redacta; no es la fuente de verdad de los números.
+
+### Política de ruteo
+- **🔴 REJECT** — solo motor determinista (fraude aritmético, campos obligatorios, duplicado).
+- **🟡 MANUAL_REVIEW** — alerta forense/VLM, o confianza intermedia.
+- **🟢 AUTO_APPROVE** — limpio y por debajo del umbral conformal de riesgo.
+
 ---
 
-## 5. Interfaz de Usuario y Ruteo
+## 3. Threat model
 
-La interfaz web rutea los resultados demostrando el origen del dato (Página del PDF) y aplicando los colores de la política de decisión, incluyendo un **Panel Forense** para evaluar visualmente las alertas de fraude a nivel de píxel:
+Las métricas de detección no son interpretables sin declarar contra quién y bajo qué canal se
+miden. El modelo de amenaza completo está en **[THREAT_MODEL.md](THREAT_MODEL.md)**. En resumen:
 
+| Adversario | Capacidad | Cobertura en Cotejo |
+|---|---|---|
+| **Casual** | edita un dígito y reenvía | determinista (si rompe la suma) + forense (si sobrevive el canal) + VLM |
+| **Competente** | reimprime/reescanea, aritmética consistente | VLM (incoherencia residual); el forense clásico **falla aquí** |
+| **Fabricador** | factura falsa coherente desde cero | **fuera de alcance**: requiere reconciliación externa (roadmap) |
+
+El **canal de transmisión** (original / recompresión / WhatsApp / print-scan) es parte del modelo:
+decide la viabilidad de cada detector. Fuera de alcance explícito: fabricación de contenido,
+adversario adaptativo, y localización a nivel píxel (problema abierto).
+
+---
+
+## 4. El benchmark
+
+Para medir sin "tablas de promesas", se construyó un benchmark de manipulaciones **realistas**
+sobre 41 facturas reales (`mychen76/invoices-and-receipts_ocr_v1`), cruzando:
+
+- **5 ataques guiados por OCR sobre contenido real** (no parches aleatorios): copia de dígito
+  font-matched, reescritura con fuente externa, borrado por inpainting, splice de otro documento,
+  clonado de región. Cada uno con máscara ground-truth exacta.
+- **4 canales de transmisión:** original, recompresión JPEG, WhatsApp (≤1280px + q70), print-scan.
+
+960 muestras, splits calib/test por documento, generación semillada y reproducible. Detalle y
+sesgos conocidos en el **[datasheet](data/benchmark_v1/DATASHEET.md)**. Métrica de localización:
+un ataque cuenta como detectado solo si un hallazgo solapa la región real (IoU ≥ 0.2).
+
+---
+
+## 5. Resultados
+
+### 5.1 Stack forense clásico — resultado negativo (honesto)
+
+APCER localizado por ataque × canal (% de ataques cuya región **no** se señala; menor = mejor):
+
+| | original | recompresión | whatsapp | print-scan |
+|---|---|---|---|---|
+| **todos los ataques** | ~100 | ~100 | ~100 | ~100 |
+
+BPCER (falsas alarmas en limpios): typography 55–75% · ELA/ruido 0–75% · copy-move 0% (silencio
+total). **Lectura:** la capa forense clásica no localiza ninguna manipulación; sus alertas de
+página son indistinguibles de ruido. La transmisión rompe los detectores de dos formas opuestas:
+WhatsApp apaga ELA/ruido por completo, las demás cadenas lo dejan disparando en todas partes.
+
+> Nota de retractación metodológica: versiones previas de este README publicaban métricas
+> forenses favorables (p. ej. "typography 50/45") que eran artefactos de un scoring a nivel
+> página sin localización, sin split, y con umbrales ajustados sobre el set reportado. Esas
+> cifras quedan retiradas.
+
+### 5.2 VLM-as-judge — detecta a nivel documento, no localiza
+
+Gemini como perito forense (`eval/vlm_judge.py`) tampoco localiza el píxel (razona sobre la
+incoherencia visible/aritmética, no sobre la textura), pero a nivel documento es un detector
+**útil y de bajo falso positivo**: BPCER 0–10% frente al 55–75% del stack clásico, capturando
+mejor el vector de fraude más probable (reescritura de importe). AUC ≈ 0.72.
+
+### 5.3 Fusión calibrada + ruteo conformal — el resultado
+
+Una regresión logística calibrada combina las señales clásicas (débiles) con el VLM
+(`eval/fusion_routing.py`):
+
+| modelo | AUC (test) |
+|---|---|
+| clásico solo | 0.51 (ruido) |
+| VLM solo | 0.72 |
+| **fusión clásico+VLM** | **0.77** |
+
+La fusión supera a cualquier señal sola: las señales clásicas, inservibles por separado,
+**aportan al calibrarse**.
+
+El ruteo es **predicción selectiva conformal**: la garantía se fija sobre la clase de fraude
+(qué fracción del fraude se cuela en AUTO_APPROVE), por lo que es **independiente de la
+prevalencia** y transfiere a cualquier despliegue. Reproyectada a prevalencia real de cliente
+(2% manipuladas), la curva riesgo-cobertura (test):
+
+| automatización | fuga en auto-approve | fraude capturado |
+|---|---|---|
+| 62% | 0.8% | 75% |
+| 77% | 0.9% | 65% |
+| 84% | 1.0% | 56% |
+
+**Titular:** automatizar ~3 de cada 4 facturas con <1% de fuga de fraude en lo auto-aprobado, y
+una cota conformal demostrable (≤5% de escape al 90% de confianza) sobre la porción certificada.
+El número exacto de cobertura crece con más datos de calibración (la cota Clopper-Pearson es
+conservadora con calib pequeño — un comportamiento correcto, no un fallo).
+
+---
+
+## 6. Limitaciones honestas
+
+- **Manipulaciones sintéticas ≠ fraude de campo.** El benchmark inyecta ataques realistas sobre
+  facturas reales, pero no demuestra generalización a fraude sofisticado real.
+- **Sin localización.** Ni el clásico ni un VLM general localizan la región manipulada en
+  facturas transmitidas. Queda como problema abierto (candidatos: detectores aprendidos tipo
+  TruFor/CAT-Net en inferencia).
+- **Detecta manipulación del documento, no falsedad del contenido.** Una factura falsa coherente
+  desde cero es forensemente impecable; requiere reconciliación contra fuente externa.
+- **Prevalencia.** El benchmark está saturado de ataques a propósito; los titulares se
+  reproyectan a la prevalencia real y la garantía se fija sobre la clase de fraude para ser
+  robusta a la mezcla.
+- **Extracción (O1) aún no medida** contra el dataset etiquetado IDSEM (ver roadmap).
+
+---
+
+## 7. Reproducción
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+pytest -q                                   # suite de tests
+
+# Pipeline experimental completo (sin llaves ni coste; usa caché VLM si existe):
+python reproduce.py --skip-vlm
+
+# Con el baseline VLM vía Vertex AI (consume billing GCP, sin límite de free tier):
+VLM_USE_VERTEX=1 GOOGLE_CLOUD_PROJECT=<tu-proyecto> python reproduce.py
+```
+
+Etapas individuales: `build_benchmark.py` → `eval_benchmark.py` (clásico) → `eval_vlm.py` (VLM)
+→ `fusion_routing.py` (fusión + ruteo). Todo idempotente y semillado.
+
+---
+
+## 8. Stack y despliegue
+
+- **API:** Python 3.12, FastAPI, Pydantic v2. **PDF:** PyMuPDF. **Forense:** OpenCV, scikit-image,
+  scikit-learn, Tesseract. **Modelos:** Gemini (Flash/Pro) vía Google GenAI SDK (AI Studio o
+  Vertex AI). **Cola opcional:** Celery + Redis (en local corre síncrono sin Redis).
+- **Despliegue:** contenedor en Cloud Run.
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload   # GEMINI_API_KEY en .env
+```
+
+### Interfaz
+
+La UI rutea los resultados con la política de decisión y un panel forense con la evidencia
+visual (overlays) sobre la página de origen.
 
 <div align="center">
   <img src="imagenes_repo/Screenshot%202026-06-08%20225846.png" width="45%" />
-  <img src="imagenes_repo/Screenshot%202026-06-08%20225900.png" width="45%" />
   <img src="imagenes_repo/Screenshot%202026-06-08%20232503.png" width="45%" />
-  <img src="imagenes_repo/Screenshot%202026-06-08%20232704.png" width="45%" />
   <img src="imagenes_repo/Screenshot%202026-06-08%20234921.png" width="45%" />
-  <img src="imagenes_repo/Screenshot%202026-06-08%20235349.png" width="45%" />
   <img src="imagenes_repo/Screenshot%202026-06-09%20000218.png" width="45%" />
 </div>
 
 ---
 
-## 5. Tecnologías y Despliegue Local
+## 9. Roadmap
 
-- **API:** Python 3.12, FastAPI, Pydantic v2.
-- **Modelos:** Google GenAI SDK (Gemini 2.5 Flash / Pro).
-- **Procesamiento de PDF:** PyMuPDF.
-
-**Ejecución:**
-```bash
-pip install -r requirements.txt
-# Configurar GEMINI_API_KEY en archivo .env
-uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
-```
+1. **Localización aprendida** — TruFor/CAT-Net en inferencia sobre el benchmark; ¿alguno baja del
+   100% de APCER localizado?
+2. **Extracción medida (O1)** — exactitud por campo contra IDSEM (75k facturas etiquetadas,
+   CC-BY 4.0); cierra la mitad "extracción" del pipeline.
+3. **Reconciliación multi-documento** — el vector del adversario fabricador (A3 del threat model).
+4. **Publicación del benchmark** en HuggingFace Hub con su datasheet.
