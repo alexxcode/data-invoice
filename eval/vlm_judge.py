@@ -17,10 +17,38 @@ from typing import List, Optional, Tuple
 
 from PIL import Image
 
-# Reutiliza el cliente lazy del pipeline (no exige API key al importar)
-from app.extraction import get_client
-
 DEFAULT_MODEL = os.environ.get("VLM_JUDGE_MODEL", "gemini-2.5-flash")
+
+# Backend del cliente. Dos rutas a los MISMOS modelos Gemini:
+#   - AI Studio (Developer API): API key, free tier = 20 req/día/modelo.
+#   - Vertex AI: vía proyecto GCP, consume el billing/créditos de GCP, sin ese cap.
+# Se elige con VLM_USE_VERTEX=1 (o GOOGLE_GENAI_USE_VERTEXAI=true). Vertex usa
+# ADC (gcloud auth application-default login) + project + location.
+_client = None
+
+
+def _build_client():
+    from google import genai
+
+    use_vertex = (os.environ.get("VLM_USE_VERTEX", "").lower() in ("1", "true", "yes")
+                  or os.environ.get("GOOGLE_GENAI_USE_VERTEXAI", "").lower() == "true")
+    if use_vertex:
+        project = os.environ.get("GOOGLE_CLOUD_PROJECT") or os.environ.get("GCP_PROJECT")
+        location = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
+        if not project:
+            raise ValueError("VLM_USE_VERTEX activo pero falta GOOGLE_CLOUD_PROJECT.")
+        return genai.Client(vertexai=True, project=project, location=location)
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("Sin VLM_USE_VERTEX ni GEMINI_API_KEY.")
+    return genai.Client(api_key=api_key)
+
+
+def get_client():
+    global _client
+    if _client is None:
+        _client = _build_client()
+    return _client
 
 _PROMPT = (
     "Eres un perito forense de documentos. Analizas la imagen de UNA factura/recibo "

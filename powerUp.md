@@ -315,6 +315,38 @@ cuota diaria; el barrido completo (480 test) es inviable sin habilitar facturaci
 quedó depurado de los 207 errores 429 (solo 19 veredictos válidos conservados). Decisión de
 producto pendiente con el usuario: habilitar billing / reducir alcance / diferir VLM.
 
+### Fase 3 — Fusión calibrada + ruteo conformal (preliminar — 2026-06-11/12)
+
+**Construido** (`eval/fusion_routing.py`, sin nuevas llamadas a modelos: reusa
+`findings_all.jsonl` + caché VLM + manifest):
+- Ensamblado de features por documento: señales clásicas (typo/ela/copy_move fired+score,
+  n_findings) + VLM (tampered, conf, n_regiones) + label.
+- Fusión: regresión logística calibrada sobre split de calibración.
+- Ruteo conformal: umbral que garantiza, vía cota Clopper-Pearson (confianza 1−δ), que
+  como mucho una fracción α del FRAUDE se cuela en AUTO_APPROVE. La garantía se fija sobre
+  la clase tampered → **independiente de la prevalencia**, transfiere a cualquier despliegue.
+- Reproyección a prevalencia real de cliente y curva riesgo-cobertura.
+
+**Resultado preliminar** (split interno por doc, n=268 con clásico+VLM; el VLM aún no cubre
+el 100% del test — los números se firman al cerrar el barrido):
+
+- **AUC (discriminación manipulado vs limpio):** clásico **0.55** (ruido, consistente con
+  Fase 1) · VLM **0.79** · **fusión 0.82**. La fusión supera al VLM solo: las señales débiles
+  clásicas, inútiles por separado, **suman ~+0.03 AUC al calibrarse**. Primera evidencia del
+  Resultado 2 de la tesis.
+- **Titular a prevalencia real (2% manipuladas):** el ruteo **automatiza ~74% del volumen
+  con <1% de fuga** de fraude en lo auto-aprobado (captura 67% del fraude); o ~95% de
+  automatización con 0.86% de fuga (captura 59%). Tradeoff automatización↔captura explícito
+  en la curva riesgo-cobertura.
+- **Garantía conformal estricta** (≤5% escape de fraude, 90% conf.) → auto-aprueba 0% con el
+  calib actual: comportamiento correcto y honesto, la cota CP es conservadora con pocas
+  muestras de calibración (se necesitan ~60-100 docs de fraude en calib para certificar ≤5%;
+  un test lo fija como invariante). Se relaja al completar el barrido + añadir el split calib.
+
+**Pendiente para firmar Fase 3:** (1) terminar barrido VLM en test (en curso); (2) correr VLM
+en el split calib (otras ~480 llamadas Vertex) para usar el split limpio calib/test del
+benchmark en vez del interno; (3) re-correr y publicar la curva final en README.
+
 ### Decisiones tomadas durante la ejecución
 
 - 2026-06-11: el cambio sin commitear en `copy_move.py` (tolerancia ±2→±8px) se revierte; la

@@ -1,0 +1,170 @@
+{
+  "digit_copy|none": {
+    "pos": 11,
+    "page": 4,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_copy|recompress": {
+    "pos": 10,
+    "page": 5,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_copy|whatsapp": {
+    "pos": 10,
+    "page": 7,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_copy|print_scan": {
+    "pos": 10,
+    "page": 6,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_render|none": {
+    "pos": 10,
+    "page": 8,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_render|recompress": {
+    "pos": 10,
+    "page": 8,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_render|whatsapp": {
+    "pos": 9,
+    "page": 7,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "digit_render|print_scan": {
+    "pos": 10,
+    "page": 9,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "inpaint_erase|none": {
+    "pos": 10,
+    "page": 6,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "inpaint_erase|recompress": {
+    "pos": 10,
+    "page": 6,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "inpaint_erase|whatsapp": {
+    "pos": 10,
+    "page": 3,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "inpaint_erase|print_scan": {
+    "pos": 10,
+    "page": 4,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "splice_foreign|none": {
+    "pos": 10,
+    "page": 8,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "splice_foreign|recompress": {
+    "pos": 10,
+    "page": 5,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "splice_foreign|whatsapp": {
+    "pos": 10,
+    "page": 7,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "splice_foreign|print_scan": {
+    "pos": 10,
+    "page": 7,
+    "loc": 1,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move_region|none": {
+    "pos": 10,
+    "page": 4,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move_region|recompress": {
+    "pos": 10,
+    "page": 3,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move_region|whatsapp": {
+    "pos": 9,
+    "page": 6,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "copy_move_region|print_scan": {
+    "pos": 10,
+    "page": 5,
+    "loc": 0,
+    "neg": 0,
+    "fp": 0
+  },
+  "clean|none": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 10,
+    "fp": 0
+  },
+  "clean|recompress": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 10,
+    "fp": 1
+  },
+  "clean|whatsapp": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 10,
+    "fp": 1
+  },
+  "clean|print_scan": {
+    "pos": 0,
+    "page": 0,
+    "loc": 0,
+    "neg": 9,
+    "fp": 0
+  }
+}

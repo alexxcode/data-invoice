@@ -173,6 +173,16 @@ def _report(acc, args, n_rows, n_calls):
         line += (f"{v['fp'] / v['neg'] * 100:<12.0f}" if v and v["neg"] else f"{'-':<12}")
     print(line)
 
+    print("\n--- n evaluado por celda (ataques / limpios por cadena) ---")
+    print(f"{'ataque':<18}" + "".join(f"{c:<12}" for c in chains))
+    for a in attacks + ["clean"]:
+        line = f"{a:<18}"
+        for c in chains:
+            v = acc.get((a, c))
+            n = (v["pos"] if a != "clean" else v["neg"]) if v else 0
+            line += f"{n:<12}"
+        print(line)
+
     out_json = os.path.join(args.bench_dir, f"vlm_metrics_{args.split}.json")
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump({f"{a}|{c}": v for (a, c), v in acc.items()}, f, indent=2)
