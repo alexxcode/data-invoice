@@ -32,7 +32,7 @@ Evaluado sobre un benchmark propio de manipulaciones realistas × canales de tra
 | **El ruteo conformal automatiza con fuga acotada y demostrable** | A prevalencia real (2%): **~66–79% de automatización con ~1.1% de fuga** de fraude; o cobertura certificada con garantía ≤5% de escape al 90% de confianza. |
 
 *(Números del split test, n≈195 (~86% del benchmark); reproducibles con
-`python reproduce.py --skip-vlm`. El registro completo por fase está en [powerUp.md](powerUp.md).)*
+`python reproduce.py --skip-vlm`.)*
 
 ---
 
