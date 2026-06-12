@@ -291,6 +291,30 @@ Este es el **Resultado 1** de la tesis (powerUp.md §2), ahora medido sobre ataq
 y cadenas de transmisión, no insinuado: *ningún detector forense clásico individual sobrevive
 a las condiciones reales de transmisión de facturas.*
 
+### Fase 2 — Baseline VLM-as-judge (parcial, bloqueado por cuota — 2026-06-11)
+
+**Construido:** `eval/vlm_judge.py` (Gemini como perito forense: salida JSON con
+`tampered` + bboxes normalizados, normalizada al mismo contrato que los detectores
+clásicos) y `eval/eval_vlm.py` (barrido cacheado/resume-able, misma métrica IoU/APCER/BPCER,
+con corte temprano y exclusión de errores de las métricas).
+
+**Resultado parcial (n=3 por celda, solo cadena `none` — el smoke antes de agotar cuota):**
+
+| | localizado | página | BPCER |
+|---|---|---|---|
+| VLM-judge (flash) | APCER 100% | APCER 33–67% | **0%** |
+
+Señal preliminar (a confirmar a escala): el VLM **tampoco localiza** la región editada
+(razona sobre el total aritmético, no sobre el píxel), PERO a nivel documento marca
+manipulación con **BPCER ≈ 0%**, frente al 55–75% del stack clásico. Operating point
+opuesto y potencialmente útil para "derivar a humano".
+
+**BLOQUEO:** la API key de Gemini está en **free tier = 20 requests/día/modelo**
+(`GenerateRequestsPerDayPerProjectPerModel-FreeTier`, quotaValue 20). El smoke consumió la
+cuota diaria; el barrido completo (480 test) es inviable sin habilitar facturación. El caché
+quedó depurado de los 207 errores 429 (solo 19 veredictos válidos conservados). Decisión de
+producto pendiente con el usuario: habilitar billing / reducir alcance / diferir VLM.
+
 ### Decisiones tomadas durante la ejecución
 
 - 2026-06-11: el cambio sin commitear en `copy_move.py` (tolerancia ±2→±8px) se revierte; la

@@ -1,0 +1,19 @@
+{"image": "images\\doc1_digit_copy_none.jpg", "tampered": true, "regions": [[0.652, 0.585, 0.749, 0.598]], "error": null}
+{"image": "images\\doc1_inpaint_erase_none.jpg", "tampered": true, "regions": [[0.3869, 0.4234, 0.4595, 0.4448]], "error": null}
+{"image": "images\\doc1_splice_foreign_none.jpg", "tampered": true, "regions": [[0.4716, 0.3935, 0.52, 0.4106]], "error": null}
+{"image": "images\\doc1_copy_move_region_none.jpg", "tampered": true, "regions": [[0.399, 0.77, 0.447, 0.782]], "error": null}
+{"image": "images\\doc1_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc3_digit_copy_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc3_digit_render_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc3_inpaint_erase_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc3_splice_foreign_none.jpg", "tampered": true, "regions": [[0.4595, 0.6228, 0.532, 0.6399]], "error": null}
+{"image": "images\\doc3_copy_move_region_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc3_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc5_digit_copy_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc5_digit_render_none.jpg", "tampered": true, "regions": [[0.699, 0.31, 0.779, 0.322]], "error": null}
+{"image": "images\\doc5_inpaint_erase_none.jpg", "tampered": true, "regions": [[0.7859, 0.6415, 0.8827, 0.6672]], "error": null}
+{"image": "images\\doc5_splice_foreign_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc5_copy_move_region_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc5_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc1_digit_copy_recompress.jpg", "tampered": true, "regions": [[0.7497, 0.5774, 0.8343, 0.5885]], "error": null}
+{"image": "images\\doc1_digit_copy_print_scan.jpg", "tampered": true, "regions": [[0.6892, 0.5799, 0.7981, 0.5971]], "error": null}
