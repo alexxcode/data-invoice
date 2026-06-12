@@ -347,6 +347,28 @@ el 100% del test — los números se firman al cerrar el barrido):
 en el split calib (otras ~480 llamadas Vertex) para usar el split limpio calib/test del
 benchmark en vez del interno; (3) re-correr y publicar la curva final en README.
 
+### O1 (extracción vs IDSEM) — investigación de viabilidad (2026-06-12)
+
+Decisión del usuario: **solo investigar**, no comprometer alcance aún. Hallazgos:
+
+- **Dataset:** IDSEM (Sánchez et al., *Scientific Data* 9:786, 2022). 75.000 facturas eléctricas
+  españolas sintéticas en PDF + etiquetas JSON con 86 campos. Es el dataset ancla que
+  `instrucciones.md` ya nombraba.
+- **Licencia: CC-BY 4.0** → redistribuible con atribución, apto para repo público. ✔
+- **Acceso:** Zenodo (`zenodo.org/records/6373179`, zip único 30.9 GB) o Figshare (train 13 GB /
+  test 17 GB) o **subsets parciales** + una **versión reducida de 100 facturas/directorio** para
+  preview. Para medir O1 NO hace falta bajar 75k: unas pocas centenas etiquetadas bastan para
+  exactitud por campo. El lift de datos es modesto si se usa el subset/reducido.
+- **Esfuerzo estimado (~1-2 días):** (1) bajar subset reducido; (2) capa de mapeo del esquema
+  de 86 campos de IDSEM → `FacturaEstructurada` (emisor/cif/cliente/cups/subtotal/impuestos/
+  total/numero); (3) correr extracción Gemini Flash vía Vertex sobre N facturas (coste bajo);
+  (4) métrica de exactitud por campo (match exacto para IDs/strings, tolerancia para floats),
+  reportada por campo, no promedio. Cierra la mitad "extracción" que O1 nunca midió.
+- **Encaje en la tesis:** la extracción es el commodity; el valor es que quede MEDIDA y honesta,
+  y que alimente el motor determinista con datos de campo reales (hoy el benchmark forense usa
+  recibos de HF sin ground-truth de campos). Recomendación: mini-fase propia tras cerrar Fase 3,
+  no bloquea nada del track forense/fusión.
+
 ### Decisiones tomadas durante la ejecución
 
 - 2026-06-11: el cambio sin commitear en `copy_move.py` (tolerancia ±2→±8px) se revierte; la
