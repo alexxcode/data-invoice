@@ -54,3 +54,6 @@ data/overlays/
 
 # MacOS
 .DS_Store
+
+# Logs de corridas
+*.log
