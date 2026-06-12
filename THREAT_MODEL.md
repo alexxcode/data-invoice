@@ -18,7 +18,7 @@ Corolario de diseño (modelo de autoridad): **solo el motor determinista puede R
 capas forense y VLM nunca rechazan por sí solas; solo derivan a revisión humana
 (`MANUAL_REVIEW`). Una detección fallida no produce un pago automático indebido salvo que el
 documento además pase el ruteo de auto-aprobación — y ese conjunto está acotado por la garantía
-conformal (powerUp.md, Fase 3).
+conformal (ver README §5.3).
 
 ---
 

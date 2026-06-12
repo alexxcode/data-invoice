@@ -246,3 +246,11 @@ visual (overlays) sobre la página de origen.
    CC-BY 4.0); cierra la mitad "extracción" del pipeline.
 3. **Reconciliación multi-documento** — el vector del adversario fabricador (A3 del threat model).
 4. **Publicación del benchmark** en HuggingFace Hub con su datasheet.
+
+---
+
+## Licencia
+
+[Apache License 2.0](LICENSE). Las facturas base del benchmark provienen de
+`mychen76/invoices-and-receipts_ocr_v1` (HuggingFace); verificar sus términos antes de
+redistribuir imágenes derivadas.

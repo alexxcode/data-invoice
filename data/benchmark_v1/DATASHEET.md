@@ -2,7 +2,7 @@
 
 Sigue la estructura de *Datasheets for Datasets* (Gebru et al., 2021). Describe el benchmark
 sintético-realista de manipulación de facturas usado para evaluar la capa forense de Cotejo
-(powerUp.md, Fase 1). Pensado para acompañar una publicación en HuggingFace Hub.
+(ver el README del proyecto). Pensado para acompañar una publicación en HuggingFace Hub.
 
 ---
 
@@ -12,7 +12,7 @@ sintético-realista de manipulación de facturas usado para evaluar la capa fore
   forenses (clásicos, aprendidos o VLM) localizan/detectan manipulación de facturas **bajo las
   condiciones reales de transmisión** (recompresión, WhatsApp, print-scan). Los benchmarks
   previos del proyecto contaban como detección cualquier alerta a nivel página, con ataques
-  irreales y sin split — produciendo métricas no interpretables (ver powerUp.md §1.2).
+  irreales y sin split — produciendo métricas no interpretables.
 - **Hueco que llena:** no existe un benchmark público de forgery en facturas que cruce
   *tipo de ataque × canal de transmisión* con máscaras de localización y splits limpios.
 
