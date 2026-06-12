@@ -4,6 +4,11 @@ Cotejo es un sistema de extracción y validación de facturas diseñado bajo una
 
 En lugar de confiar el proceso completo a una IA generativa, el sistema aísla el proceso de lectura (delegado al LLM) del proceso de validación final (delegado a un código determinista tradicional). Esto permite rutar los documentos de forma segura sin depender de que un LLM tome la decisión de rechazo.
 
+> **Documentos clave:** [THREAT_MODEL.md](THREAT_MODEL.md) define contra qué adversario y bajo
+> qué canal de transmisión se mide la detección (sin esto las métricas no son interpretables).
+> [powerUp.md](powerUp.md) es el plan de investigación y el registro de resultados por fase.
+> El pipeline experimental completo se reproduce con `python reproduce.py --skip-vlm`.
+
 ---
 
 ## 1. Arquitectura del Sistema

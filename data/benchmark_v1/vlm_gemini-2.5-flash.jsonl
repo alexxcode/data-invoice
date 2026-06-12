@@ -283,3 +283,47 @@
 {"image": "images\\doc25_digit_copy_none.jpg", "tampered": false, "regions": [], "error": null}
 {"image": "images\\doc25_digit_copy_recompress.jpg", "tampered": false, "regions": [], "error": null}
 {"image": "images\\doc25_digit_copy_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_digit_copy_print_scan.jpg", "tampered": true, "regions": [[0.8827, 0.2138, 0.9069, 0.2267]], "error": null}
+{"image": "images\\doc25_digit_render_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_digit_render_recompress.jpg", "tampered": true, "regions": [[0.701, 0.056, 0.846, 0.073]], "error": null}
+{"image": "images\\doc25_digit_render_whatsapp.jpg", "tampered": true, "regions": [[0.7255, 0.0513, 0.8948, 0.0684]], "error": null}
+{"image": "images\\doc25_digit_render_print_scan.jpg", "tampered": true, "regions": [[0.604, 0.076, 0.629, 0.09]], "error": null}
+{"image": "images\\doc25_inpaint_erase_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_inpaint_erase_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_inpaint_erase_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_inpaint_erase_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_splice_foreign_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_splice_foreign_recompress.jpg", "tampered": true, "regions": [[0.106, 0.341, 0.119, 0.354]], "error": null}
+{"image": "images\\doc25_splice_foreign_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_splice_foreign_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_copy_move_region_none.jpg", "tampered": true, "regions": [[0.1027, 0.7185, 0.1874, 0.7314]], "error": null}
+{"image": "images\\doc25_copy_move_region_recompress.jpg", "tampered": true, "regions": [[0.102, 0.714, 0.218, 0.727]], "error": null}
+{"image": "images\\doc25_copy_move_region_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_copy_move_region_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_clean_recompress.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_clean_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc25_clean_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc27_digit_copy_none.jpg", "tampered": true, "regions": [[0.835, 0.551, 0.871, 0.564]], "error": null}
+{"image": "images\\doc27_digit_copy_recompress.jpg", "tampered": true, "regions": [[0.8319, 0.5466, 0.8767, 0.5593]], "error": null}
+{"image": "images\\doc27_digit_copy_whatsapp.jpg", "tampered": true, "regions": [[0.78, 0.466, 0.81, 0.477]], "error": null}
+{"image": "images\\doc27_digit_copy_print_scan.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc27_digit_render_none.jpg", "tampered": true, "regions": [[0.645, 0.601, 0.694, 0.613]], "error": null}
+{"image": "images\\doc27_digit_render_recompress.jpg", "tampered": true, "regions": [[0.66, 0.64356, 0.71, 0.65417]], "error": null}
+{"image": "images\\doc27_digit_render_whatsapp.jpg", "tampered": true, "regions": [[0.6989, 0.5115, 0.7739, 0.5235]], "error": null}
+{"image": "images\\doc27_digit_render_print_scan.jpg", "tampered": true, "regions": [[0.555, 0.59, 0.611, 0.604]], "error": null}
+{"image": "images\\doc27_inpaint_erase_none.jpg", "tampered": true, "regions": [[0.6046, 0.5213, 0.7013, 0.547], [0.7981, 0.5213, 0.8948, 0.547]], "error": null}
+{"image": "images\\doc27_inpaint_erase_whatsapp.jpg", "tampered": true, "regions": [[0.701, 0.428, 0.786, 0.441]], "error": null}
+{"image": "images\\doc27_inpaint_erase_print_scan.jpg", "tampered": true, "regions": [[0.6513, 0.5457, 0.6755, 0.5628], [0.8474, 0.5457, 0.8716, 0.5628], [0.5387, 0.757, 0.6295, 0.7741], [0.7082, 0.757, 0.7869, 0.7741], [0.8414, 0.757, 0.9322, 0.7741]], "error": null}
+{"image": "images\\doc27_splice_foreign_none.jpg", "tampered": true, "regions": [[0.918, 0.337, 0.973, 0.35]], "error": null}
+{"image": "images\\doc27_splice_foreign_recompress.jpg", "tampered": true, "regions": [[0.90447, 0.33761, 0.96735, 0.34957]], "error": null}
+{"image": "images\\doc27_splice_foreign_whatsapp.jpg", "tampered": true, "regions": [[0.9, 0.297, 0.963, 0.306]], "error": null}
+{"image": "images\\doc27_splice_foreign_print_scan.jpg", "tampered": true, "regions": [[0.8948, 0.34046, 0.96735, 0.35072]], "error": null}
+{"image": "images\\doc27_copy_move_region_none.jpg", "tampered": true, "regions": [[0.701, 0.547, 0.81, 0.577]], "error": null}
+{"image": "images\\doc27_copy_move_region_recompress.jpg", "tampered": true, "regions": [[0.645, 0.638, 0.717, 0.65]], "error": null}
+{"image": "images\\doc27_copy_move_region_whatsapp.jpg", "tampered": true, "regions": [[0.5583, 0.4363, 0.6167, 0.4469]], "error": null}
+{"image": "images\\doc27_copy_move_region_print_scan.jpg", "tampered": true, "regions": [[0.701, 0.552, 0.798, 0.569]], "error": null}
+{"image": "images\\doc27_clean_none.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc27_clean_recompress.jpg", "tampered": true, "regions": [[0.5319, 0.8982, 0.5417, 0.9109], [0.7013, 0.8982, 0.711, 0.9109], [0.8464, 0.8982, 0.8561, 0.9109]], "error": null}
+{"image": "images\\doc27_clean_whatsapp.jpg", "tampered": false, "regions": [], "error": null}
+{"image": "images\\doc27_clean_print_scan.jpg", "tampered": false, "regions": [], "error": null}
